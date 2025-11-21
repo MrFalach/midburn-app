@@ -4,6 +4,7 @@ import { StageSelector } from './components/StageSelector';
 import { SearchBar } from './components/SearchBar';
 import { SearchResults } from './components/SearchResults';
 import { stages } from './data/stages';
+import { LiveNowView } from './components/LiveNowView';
 
 function App() {
   const [isReady, setIsReady] = useState(false);
@@ -12,6 +13,7 @@ function App() {
   const [isStandalone, setIsStandalone] = useState(false);
   const [selectedStageId, setSelectedStageId] = useState(stages[0].id);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showLiveNow, setShowLiveNow] = useState(false);
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
@@ -65,6 +67,74 @@ function App() {
   const headerTranslateY = Math.min(scrollY / 2, 150);
   const showScrollButton = scrollY > 200;
 
+  // Get current playing slots
+const getCurrentlyPlaying = () => {
+  const results: Array<{
+    stageName: string;
+    date: string;
+    startTime: string;
+    endTime: string;
+    artist: string;
+  }> = [];
+
+  const now = new Date();
+  const currentHours = now.getHours();
+  const currentMinutes = now.getMinutes();
+  const currentTimeInMinutes = currentHours * 60 + currentMinutes;
+
+  stages.forEach(stage => {
+    stage.days.forEach(day => {
+      // Parse date
+      const parts = day.date.split(' ');
+      if (parts.length < 2) return;
+      const [dayNum, month] = parts[1].split('.').map(Number);
+      const currentYear = now.getFullYear();
+      const slotDate = new Date(currentYear, month - 1, dayNum);
+      
+      // Check if same day
+      if (slotDate.getDate() === now.getDate() &&
+          slotDate.getMonth() === now.getMonth() &&
+          slotDate.getFullYear() === now.getFullYear()) {
+        
+        day.slots.forEach(slot => {
+          const [startHours, startMinutes] = slot.startTime.split(':').map(Number);
+          const [endHours, endMinutes] = slot.endTime.split(':').map(Number);
+          
+          let startTimeInMinutes = startHours * 60 + startMinutes;
+          let endTimeInMinutes = endHours * 60 + endMinutes;
+          
+          if (endTimeInMinutes < startTimeInMinutes) {
+            endTimeInMinutes += 24 * 60;
+            if (currentTimeInMinutes < 720) {
+              const adjustedTime = currentTimeInMinutes + 24 * 60;
+              if (adjustedTime >= startTimeInMinutes && adjustedTime < endTimeInMinutes) {
+                results.push({
+                  stageName: stage.name,
+                  date: day.date,
+                  startTime: slot.startTime,
+                  endTime: slot.endTime,
+                  artist: slot.artist,
+                });
+              }
+            }
+          } else {
+            if (currentTimeInMinutes >= startTimeInMinutes && currentTimeInMinutes < endTimeInMinutes) {
+              results.push({
+                stageName: stage.name,
+                date: day.date,
+                startTime: slot.startTime,
+                endTime: slot.endTime,
+                artist: slot.artist,
+              });
+            }
+          }
+        });
+      }
+    });
+  });
+
+  return results;
+};
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-950 via-orange-900 to-yellow-800 desert-texture">
       {/* Tribal pattern decoration - top */}
@@ -132,35 +202,54 @@ function App() {
           <div className="text-amber-500 text-xs">▲ ▼ ▲</div>
           <div className="h-px flex-1 bg-gradient-to-l from-transparent to-amber-600"></div>
         </div>
+        {/* Live Now Button */}
+<button
+  onClick={() => setShowLiveNow(!showLiveNow)}
+  className={`w-full mb-4 px-4 py-3 rounded-xl font-bold text-sm transition-all border-2 ${
+    showLiveNow
+      ? 'bg-gradient-to-br from-green-400 to-green-600 text-white border-green-300 shadow-lg'
+      : 'bg-amber-100/90 text-amber-900 border-amber-800/70 hover:bg-amber-200 hover:border-amber-700'
+  }`}
+  style={{ fontFamily: "'Righteous', sans-serif" }}
+>
+  {showLiveNow ? '🔴 LIVE NOW' : '🎵 מה מנגן עכשיו?'}
+</button>
+<SearchBar 
+  searchQuery={searchQuery}
+  onSearchChange={(query) => {
+    setSearchQuery(query);
+    if (query) setShowLiveNow(false);
+  }}
+/>
         
-        <SearchBar 
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-        />
-        
-        <div className={searchQuery ? 'invisible h-0 overflow-hidden' : ''}>
-          <StageSelector 
-            stages={stages}
-            selectedStageId={selectedStageId}
-            onSelectStage={setSelectedStageId}
-          />
-        </div>
+<div className={searchQuery ? 'invisible h-0 overflow-hidden' : ''}>
+  <StageSelector 
+    stages={stages}
+    selectedStageId={selectedStageId}
+    onSelectStage={(stageId) => {
+      setSelectedStageId(stageId);
+      setShowLiveNow(false);
+    }}
+  />
+</div>
       </div>
       
       {/* Spacer for fixed header */}
       <div className="h-[400px]"></div>
       
       {/* Content */}
-      <div className="px-6 pt-6 pb-10">
-        {searchQuery ? (
-          <SearchResults 
-            stages={stages}
-            searchQuery={searchQuery}
-          />
-        ) : (
-          <StageSchedule stage={selectedStage} />
-        )}
-      </div>
+<div className="pt-6 pb-10">
+  {showLiveNow ? (
+    <LiveNowView liveSlots={getCurrentlyPlaying()} />
+  ) : searchQuery ? (
+    <SearchResults 
+      stages={stages}
+      searchQuery={searchQuery}
+    />
+  ) : (
+    <StageSchedule stage={selectedStage} />
+  )}
+</div>
     </div>
   );
 }

@@ -185,10 +185,10 @@ export const stages: Stage[] = [
     name: 'Sunrise Kingdom',
     days: [
                   {
-        date: 'Friday 21.11',
+        date: 'Sat 22.11',
         slots: [
-          { startTime: '21:00', endTime: '23:00', artist: 'Sagigi' },
-          { startTime: '23:00', endTime: '00:00', artist: 'Delete Me' },
+          { startTime: '00:00', endTime: '01:00', artist: 'Sagigi' },
+          { startTime: '00:00', endTime: '02:00', artist: 'Delete Me' },
         ],
       },
 {
