@@ -34,36 +34,40 @@ export function SearchResults({ stages, searchQuery }: SearchResultsProps) {
 
   if (results.length === 0) {
     return (
-      <div className="bg-amber-50 rounded-xl shadow-xl p-8 text-center border-2 border-amber-200">
-        <p className="text-amber-800 text-lg">😕 לא נמצאו תוצאות עבור "{searchQuery}"</p>
+      <div className="old-paper paper-noise rounded-2xl vintage-shadow worn-edges p-8 text-center relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-black/10 pointer-events-none rounded-2xl"></div>
+        <p className="text-orange-950 text-lg font-semibold relative z-10">😕 לא נמצאו תוצאות עבור "{searchQuery}"</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-amber-50 rounded-xl shadow-xl overflow-hidden border-2 border-amber-200">
-      <div className="bg-gradient-to-r from-amber-600 to-orange-600 p-3">
-        <h2 className="text-xl font-bold text-center text-white">
+    <div className="rounded-2xl overflow-hidden vintage-shadow worn-edges">
+      <div className="bg-gradient-to-b from-orange-900 via-orange-800 to-orange-700 p-4 border-b-2 border-orange-950/50 paper-noise relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-transparent pointer-events-none"></div>
+        <h2 className="text-xl font-bold text-center text-amber-100 relative z-10" style={{ fontFamily: "'Righteous', sans-serif" }}>
           🔍 תוצאות חיפוש: {results.length} הופעות
         </h2>
       </div>
 
-      <div className="p-3 space-y-3">
+      <div className="old-paper paper-noise p-4 space-y-3 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-black/10 pointer-events-none rounded-b-2xl"></div>
+        
         {results.map((result, index) => (
           <div
             key={index}
-            className="bg-gradient-to-r from-amber-100 to-orange-100 rounded-lg p-3 border border-amber-200"
+            className="bg-orange-900/10 rounded-lg p-3 border-l-4 border-orange-900/50 relative z-10"
           >
-            <div className="font-bold text-lg text-gray-900 mb-1">
+            <div className="font-bold text-lg text-gray-900 mb-1" style={{ fontFamily: "'Righteous', sans-serif" }}>
               {result.artist}
             </div>
-            <div className="flex items-center gap-2 text-sm text-amber-800">
-              <span className="font-semibold">🎵 {result.stageName}</span>
+            <div className="flex items-center gap-2 text-sm text-orange-950 font-semibold">
+              <span>🎵 {result.stageName}</span>
               <span>•</span>
               <span>{result.date}</span>
             </div>
-            <div className="text-xs font-mono text-amber-700 mt-1 font-semibold">
-              {result.startTime} - {result.endTime}
+            <div className="text-sm font-mono text-orange-900 mt-1 font-bold">
+              {result.startTime} – {result.endTime}
             </div>
           </div>
         ))}
