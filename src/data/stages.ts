@@ -20,4 +20,64 @@ export const stages: Stage[] = [
       },
     ],
   },
+  {
+    id: 'pixel',
+    name: 'Pixel',
+    days: [
+      {
+        date: 'Thursday 27.11',
+        slots: [
+          { startTime: '23:00', endTime: '02:30', artist: 'Genish' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'pony-riders',
+    name: 'Pony Riders',
+    days: [
+      {
+        date: 'Thursday 27.11',
+        slots: [
+          { startTime: '02:30', endTime: '06:00', artist: 'Genish' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'paradise',
+    name: 'Paradise',
+    days: [
+      {
+        date: 'Thursday 27.11',
+        slots: [
+          { startTime: '06:00', endTime: '09:00', artist: 'Genish - Sunrise' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'art-catalan',
+    name: 'Art Catalan',
+    days: [
+      {
+        date: 'Friday 28.11',
+        slots: [
+          { startTime: '16:30', endTime: '19:00', artist: 'Genish' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'sunrise-kingdom',
+    name: 'Sunrise Kingdom',
+    days: [
+      {
+        date: 'Saturday 29.11',
+        slots: [
+          { startTime: '06:00', endTime: '09:00', artist: 'Genish' },
+        ],
+      },
+    ],
+  },
 ];

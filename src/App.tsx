@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import { StageSchedule } from './components/StageSchedule';
+import { StageSelector } from './components/StageSelector';
+import { SearchBar } from './components/SearchBar';
+import { SearchResults } from './components/SearchResults';
 import { stages } from './data/stages';
 
 function App() {
@@ -7,16 +10,16 @@ function App() {
   const [showReadyMessage, setShowReadyMessage] = useState(false);
   const [hasSeenBefore, setHasSeenBefore] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
+  const [selectedStageId, setSelectedStageId] = useState(stages[0].id);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    // בדוק אם האפליקציה רצה ב-standalone mode (הורדה למסך הבית)
     const standalone = window.matchMedia('(display-mode: standalone)').matches 
       || (window.navigator as any).standalone 
       || document.referrer.includes('android-app://');
     
     setIsStandalone(standalone);
 
-    // בדוק אם זו הפעם הראשונה
     const hasSeenReady = localStorage.getItem('hasSeenReady');
     setHasSeenBefore(!!hasSeenReady);
 
@@ -25,12 +28,10 @@ function App() {
         console.log('Service Worker is ready!');
         setIsReady(true);
         
-        // הצג הודעה רק אם זו הפעם הראשונה וב-standalone mode
         if (!hasSeenReady && standalone) {
           setShowReadyMessage(true);
           localStorage.setItem('hasSeenReady', 'true');
           
-          // הסתר את ההודעה אחרי 3 שניות
           setTimeout(() => {
             setShowReadyMessage(false);
           }, 3000);
@@ -41,19 +42,52 @@ function App() {
     }
   }, []);
 
+  const selectedStage = stages.find(stage => stage.id === selectedStageId) || stages[0];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-800 to-orange-600 p-4 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-800 to-orange-600">
       {!isReady && !hasSeenBefore && isStandalone && (
-        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-yellow-400 text-yellow-900 px-4 py-2 rounded-lg shadow-lg font-semibold text-sm z-50">
+        <div className="fixed top-2 left-2 right-2 bg-yellow-400 text-yellow-900 px-3 py-2 rounded-lg shadow-lg font-semibold text-sm z-50 text-center">
           ⏳ טוען את האפליקציה לעבודה אופליין...
         </div>
       )}
       {isReady && showReadyMessage && isStandalone && (
-        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-400 text-green-900 px-4 py-2 rounded-lg shadow-lg font-semibold text-sm z-50 animate-pulse">
+        <div className="fixed top-2 left-2 right-2 bg-green-400 text-green-900 px-3 py-2 rounded-lg shadow-lg font-semibold text-sm z-50 animate-pulse text-center">
           ✅ מוכן לעבודה אופליין!
         </div>
       )}
-      <StageSchedule stage={stages[0]} />
+      
+      {/* Header */}
+      <div className="sticky top-0 bg-gradient-to-r from-purple-900 to-pink-900 shadow-lg z-40 px-3 py-3">
+        <h1 className="text-xl font-bold text-center text-white mb-2">
+          🔥 Midburn Schedule
+        </h1>
+        
+        <SearchBar 
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+        />
+        
+        {!searchQuery && (
+          <StageSelector 
+            stages={stages}
+            selectedStageId={selectedStageId}
+            onSelectStage={setSelectedStageId}
+          />
+        )}
+      </div>
+      
+      {/* Content */}
+      <div className="p-3">
+        {searchQuery ? (
+          <SearchResults 
+            stages={stages}
+            searchQuery={searchQuery}
+          />
+        ) : (
+          <StageSchedule stage={selectedStage} />
+        )}
+      </div>
     </div>
   );
 }
