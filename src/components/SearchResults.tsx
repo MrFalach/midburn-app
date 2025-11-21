@@ -34,15 +34,15 @@ export function SearchResults({ stages, searchQuery }: SearchResultsProps) {
 
   if (results.length === 0) {
     return (
-      <div className="bg-white rounded-xl shadow-xl p-8 text-center">
-        <p className="text-gray-500 text-lg">😕 לא נמצאו תוצאות עבור "{searchQuery}"</p>
+      <div className="bg-amber-50 rounded-xl shadow-xl p-8 text-center border-2 border-amber-200">
+        <p className="text-amber-800 text-lg">😕 לא נמצאו תוצאות עבור "{searchQuery}"</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-xl overflow-hidden">
-      <div className="bg-gradient-to-r from-purple-600 to-pink-600 p-3">
+    <div className="bg-amber-50 rounded-xl shadow-xl overflow-hidden border-2 border-amber-200">
+      <div className="bg-gradient-to-r from-amber-600 to-orange-600 p-3">
         <h2 className="text-xl font-bold text-center text-white">
           🔍 תוצאות חיפוש: {results.length} הופעות
         </h2>
@@ -52,17 +52,17 @@ export function SearchResults({ stages, searchQuery }: SearchResultsProps) {
         {results.map((result, index) => (
           <div
             key={index}
-            className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-3"
+            className="bg-gradient-to-r from-amber-100 to-orange-100 rounded-lg p-3 border border-amber-200"
           >
             <div className="font-bold text-lg text-gray-900 mb-1">
               {result.artist}
             </div>
-            <div className="flex items-center gap-2 text-sm text-gray-600">
-              <span className="font-semibold text-purple-700">🎵 {result.stageName}</span>
+            <div className="flex items-center gap-2 text-sm text-amber-800">
+              <span className="font-semibold">🎵 {result.stageName}</span>
               <span>•</span>
               <span>{result.date}</span>
             </div>
-            <div className="text-xs font-mono text-gray-500 mt-1">
+            <div className="text-xs font-mono text-amber-700 mt-1 font-semibold">
               {result.startTime} - {result.endTime}
             </div>
           </div>

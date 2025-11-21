@@ -45,9 +45,9 @@ function App() {
   const selectedStage = stages.find(stage => stage.id === selectedStageId) || stages[0];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-800 to-orange-600">
+    <div className="min-h-screen bg-gradient-to-br from-amber-900 via-orange-800 to-yellow-600">
       {!isReady && !hasSeenBefore && isStandalone && (
-        <div className="fixed top-2 left-2 right-2 bg-yellow-400 text-yellow-900 px-3 py-2 rounded-lg shadow-lg font-semibold text-sm z-50 text-center">
+        <div className="fixed top-2 left-2 right-2 bg-amber-400 text-amber-900 px-3 py-2 rounded-lg shadow-lg font-semibold text-sm z-50 text-center">
           ⏳ טוען את האפליקציה לעבודה אופליין...
         </div>
       )}
@@ -58,8 +58,8 @@ function App() {
       )}
       
       {/* Header */}
-      <div className="sticky top-0 bg-gradient-to-r from-purple-900 to-pink-900 shadow-lg z-40 px-3 py-3">
-        <h1 className="text-xl font-bold text-center text-white mb-2">
+      <div className="sticky top-0 bg-gradient-to-r from-amber-900 via-orange-900 to-amber-800 shadow-lg z-40 px-3 py-3">
+        <h1 className="text-xl font-bold text-center text-amber-100 mb-2">
           🔥 Midburn Schedule
         </h1>
         

@@ -6,8 +6,8 @@ interface StageScheduleProps {
 
 export function StageSchedule({ stage }: StageScheduleProps) {
   return (
-    <div className="bg-white rounded-xl shadow-xl overflow-hidden">
-      <div className="bg-gradient-to-r from-purple-600 to-pink-600 p-3">
+    <div className="bg-amber-50 rounded-xl shadow-xl overflow-hidden border-2 border-amber-200">
+      <div className="bg-gradient-to-r from-amber-600 to-orange-600 p-3">
         <h2 className="text-xl font-bold text-center text-white">
           🎵 {stage.name}
         </h2>
@@ -16,7 +16,7 @@ export function StageSchedule({ stage }: StageScheduleProps) {
       <div className="p-3">
         {stage.days.map((day, dayIndex) => (
           <div key={dayIndex} className="mb-10 last:mb-0">
-            <h3 className="text-base font-bold text-pink-700 mb-2 pb-2 border-b-2 border-pink-200">
+            <h3 className="text-base font-bold text-orange-800 mb-2 pb-2 border-b-2 border-orange-300">
               {day.date}
             </h3>
 
@@ -24,13 +24,13 @@ export function StageSchedule({ stage }: StageScheduleProps) {
               {day.slots.map((slot, slotIndex) => (
                 <div
                   key={slotIndex}
-                  className="flex gap-3 p-3 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg"
+                  className="flex gap-3 p-3 bg-gradient-to-r from-amber-100 to-orange-100 rounded-lg border border-amber-200"
                 >
                   <div className="flex-shrink-0">
-                    <div className="text-xs font-mono text-gray-500 whitespace-nowrap">
+                    <div className="text-xs font-mono text-amber-800 whitespace-nowrap font-semibold">
                       {slot.startTime}
                     </div>
-                    <div className="text-xs font-mono text-gray-400">
+                    <div className="text-xs font-mono text-amber-600">
                       {slot.endTime}
                     </div>
                   </div>
