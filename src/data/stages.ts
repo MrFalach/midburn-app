@@ -187,8 +187,8 @@ export const stages: Stage[] = [
                   {
         date: 'Friday 21.11',
         slots: [
-          { startTime: '21:00', endTime: '22:00', artist: 'Sagigi' },
-          { startTime: '22:00', endTime: '23:00', artist: 'Delete Me' },
+          { startTime: '21:00', endTime: '23:00', artist: 'Sagigi' },
+          { startTime: '23:00', endTime: '00:00', artist: 'Delete Me' },
         ],
       },
 {
