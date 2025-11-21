@@ -61,8 +61,7 @@ function App() {
       )}
       
 {/* Header */}
-<div className="sticky top-0 bg-gradient-to-b from-amber-950/95 to-orange-900/95 backdrop-blur-sm shadow-2xl z-40 px-4 pt-6 pb-5 border-b-4 border-amber-600/50">
-  {/* Sun decoration */}
+<div className="sticky top-0 bg-gradient-to-b from-amber-950/95 to-orange-900/95 backdrop-blur-sm shadow-2xl z-40 px-4 pt-6 pb-5 border-b-4 border-amber-600/50 min-h-[240px]">  {/* Sun decoration */}
   <div className="flex justify-center mb-3">
     <div className="relative w-12 h-12 sun-pulse">
       <div className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-300 to-orange-500 shadow-lg shadow-orange-500/50"></div>
@@ -91,13 +90,13 @@ function App() {
     onSearchChange={setSearchQuery}
   />
   
-  {!searchQuery && (
-    <StageSelector 
-      stages={stages}
-      selectedStageId={selectedStageId}
-      onSelectStage={setSelectedStageId}
-    />
-  )}
+<div className={searchQuery ? 'invisible h-0 overflow-hidden' : ''}>
+  <StageSelector 
+    stages={stages}
+    selectedStageId={selectedStageId}
+    onSelectStage={setSelectedStageId}
+  />
+</div>
 </div>
       
 {/* Content */}

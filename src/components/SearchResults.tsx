@@ -34,43 +34,68 @@ export function SearchResults({ stages, searchQuery }: SearchResultsProps) {
 
   if (results.length === 0) {
     return (
-      <div className="old-paper paper-noise rounded-2xl vintage-shadow worn-edges p-8 text-center relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-black/10 pointer-events-none rounded-2xl"></div>
+      <div className="rounded-2xl vintage-shadow burned-edges p-8 text-center relative" style={{
+        background: '#f59e0b',
+        backgroundImage: `
+          radial-gradient(ellipse at 20% 30%, rgba(251, 191, 36, 0.4) 0%, transparent 50%),
+          radial-gradient(ellipse at 80% 70%, rgba(234, 88, 12, 0.3) 0%, transparent 50%),
+          radial-gradient(ellipse at 50% 50%, rgba(252, 211, 77, 0.2) 0%, transparent 70%),
+          repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(180, 83, 9, 0.03) 3px, rgba(180, 83, 9, 0.03) 6px),
+          repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(146, 64, 14, 0.03) 3px, rgba(146, 64, 14, 0.03) 6px)
+        `,
+        boxShadow: 'inset 0 0 100px rgba(180, 83, 9, 0.1)'
+      }}>
         <p className="text-orange-950 text-lg font-semibold relative z-10">😕 לא נמצאו תוצאות עבור "{searchQuery}"</p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-2xl overflow-hidden vintage-shadow worn-edges">
-      <div className="bg-gradient-to-b from-orange-900 via-orange-800 to-orange-700 p-4 border-b-2 border-orange-950/50 paper-noise relative">
+    <div className="rounded-2xl overflow-hidden vintage-shadow burned-edges">
+      {/* Header */}
+      <div className="p-4 border-b-2 border-orange-950/50 relative" style={{
+        background: 'linear-gradient(to bottom, #7c2d12, #c2410c, #ea580c)'
+      }}>
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-transparent pointer-events-none"></div>
         <h2 className="text-xl font-bold text-center text-amber-100 relative z-10" style={{ fontFamily: "'Righteous', sans-serif" }}>
           🔍 תוצאות חיפוש: {results.length} הופעות
         </h2>
       </div>
 
-      <div className="old-paper paper-noise p-4 space-y-3 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-black/10 pointer-events-none rounded-b-2xl"></div>
+      {/* Body */}
+      <div className="p-4 relative" style={{
+        background: '#f59e0b',
+        backgroundImage: `
+          radial-gradient(ellipse at 20% 30%, rgba(251, 191, 36, 0.4) 0%, transparent 50%),
+          radial-gradient(ellipse at 80% 70%, rgba(234, 88, 12, 0.3) 0%, transparent 50%),
+          radial-gradient(ellipse at 50% 50%, rgba(252, 211, 77, 0.2) 0%, transparent 70%),
+          repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(180, 83, 9, 0.03) 3px, rgba(180, 83, 9, 0.03) 6px),
+          repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(146, 64, 14, 0.03) 3px, rgba(146, 64, 14, 0.03) 6px)
+        `,
+        boxShadow: 'inset 0 0 100px rgba(180, 83, 9, 0.1)'
+      }}>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-black/10 pointer-events-none rounded-b-2xl" style={{ mixBlendMode: 'multiply' }}></div>
         
-        {results.map((result, index) => (
-          <div
-            key={index}
-            className="bg-orange-900/10 rounded-lg p-3 border-l-4 border-orange-900/50 relative z-10"
-          >
-            <div className="font-bold text-lg text-gray-900 mb-1" style={{ fontFamily: "'Righteous', sans-serif" }}>
-              {result.artist}
+        <div className="space-y-1 relative z-10">
+          {results.map((result, index) => (
+            <div
+              key={index}
+              className="flex flex-col gap-1 p-3 border-b border-orange-900/20 last:border-b-0"
+            >
+              <div className="font-bold text-lg text-gray-900" style={{ fontFamily: "'Righteous', sans-serif" }}>
+                {result.artist}
+              </div>
+              <div className="flex items-center gap-2 text-sm text-orange-950 font-semibold">
+                <span>🎵 {result.stageName}</span>
+                <span>•</span>
+                <span>{result.date}</span>
+              </div>
+              <div className="text-sm font-mono text-orange-950 font-bold">
+                {result.startTime} – {result.endTime}
+              </div>
             </div>
-            <div className="flex items-center gap-2 text-sm text-orange-950 font-semibold">
-              <span>🎵 {result.stageName}</span>
-              <span>•</span>
-              <span>{result.date}</span>
-            </div>
-            <div className="text-sm font-mono text-orange-900 mt-1 font-bold">
-              {result.startTime} – {result.endTime}
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
