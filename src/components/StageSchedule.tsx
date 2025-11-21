@@ -1,5 +1,5 @@
 import type { Stage } from '../types/schedule';
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Card } from './Card';
 
 interface StageScheduleProps {

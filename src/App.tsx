@@ -5,6 +5,7 @@ import { SearchBar } from "./components/SearchBar";
 import { SearchResults } from "./components/SearchResults";
 import { stages } from "./data/stages";
 import { LiveNowView } from "./components/LiveNowView";
+import { MapView } from "./components/MapView";
 
 function App() {
   const [isReady, setIsReady] = useState(false);
@@ -15,6 +16,7 @@ function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [showLiveNow, setShowLiveNow] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+  const [showMapFullscreen, setShowMapFullscreen] = useState(false);
 
   useEffect(() => {
     const standalone =
@@ -146,6 +148,7 @@ function App() {
 
     return results;
   };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-950 via-orange-900 to-yellow-800 desert-texture">
       {/* Tribal pattern decoration - top */}
@@ -163,7 +166,8 @@ function App() {
       )}
 
       {/* Scroll to top button */}
-      {showScrollButton && (
+      {/* Scroll to top button */}
+      {showScrollButton && !showMapFullscreen && (
         <button
           onClick={scrollToTop}
           className="fixed bottom-6 right-4 z-50 bg-gradient-to-br from-amber-400 to-orange-500 text-amber-950 p-4 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300"
@@ -185,85 +189,166 @@ function App() {
         </button>
       )}
 
-      {/* Header with scroll animation */}
-      <div
-        className="fixed top-0 left-0 right-0 bg-gradient-to-b from-amber-950/95 to-orange-900/95 backdrop-blur-sm shadow-2xl z-40 px-4 pt-6 pb-5 border-b-4 border-amber-600/50 min-h-[240px] transition-all duration-300 ease-out"
-        style={{
-          opacity: headerOpacity,
-          transform: `translateY(-${headerTranslateY}px)`,
-          pointerEvents: headerOpacity < 0.3 ? "none" : "auto",
+      {/* Map button */}
+      <button
+        onClick={() => {
+          if (showMapFullscreen) {
+            // Exit fullscreen
+            setShowMapFullscreen(false);
+            setSelectedStageId(stages[0].id);
+          } else {
+            // Enter fullscreen
+            setShowMapFullscreen(true);
+            setSelectedStageId("map");
+            setShowLiveNow(false);
+            setSearchQuery("");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }
         }}
+        className={`fixed ${
+          showMapFullscreen ? "top-4 right-4" : "bottom-6 left-4"
+        } z-50 p-4 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 ${
+          showMapFullscreen
+            ? "bg-gradient-to-br from-red-400 to-red-600 text-white"
+            : selectedStageId === "map"
+            ? "bg-gradient-to-br from-green-400 to-green-600 text-white"
+            : "bg-gradient-to-br from-amber-400 to-orange-500 text-amber-950"
+        }`}
       >
-        {/* Sun decoration */}
-        <div className="flex justify-center mb-3">
-          <div className="relative w-12 h-12 sun-pulse">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-300 to-orange-500 shadow-lg shadow-orange-500/50"></div>
-            <div className="absolute inset-1 rounded-full bg-gradient-to-br from-yellow-200 to-orange-400 flex items-center justify-center">
-              <span className="text-xl">☀️</span>
+        {showMapFullscreen ? (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        ) : (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z"
+            />
+          </svg>
+        )}
+      </button>
+
+      {/* Header with scroll animation */}
+      {!showMapFullscreen && (
+        <div
+          className="fixed top-0 left-0 right-0 bg-gradient-to-b from-amber-950/95 to-orange-900/95 backdrop-blur-sm shadow-2xl z-40 px-4 pt-6 pb-5 border-b-4 border-amber-600/50 min-h-[240px] transition-all duration-300 ease-out"
+          style={{
+            opacity: headerOpacity,
+            transform: `translateY(-${headerTranslateY}px)`,
+            pointerEvents: headerOpacity < 0.3 ? "none" : "auto",
+          }}
+        >
+          {/* Sun decoration */}
+          <div className="flex justify-center mb-3">
+            <div className="relative w-12 h-12 sun-pulse">
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-300 to-orange-500 shadow-lg shadow-orange-500/50"></div>
+              <div className="absolute inset-1 rounded-full bg-gradient-to-br from-yellow-200 to-orange-400 flex items-center justify-center">
+                <span className="text-xl">☀️</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <h1
-          className="text-3xl font-bold text-center text-amber-100 mb-1 tracking-wider"
-          style={{
-            fontFamily: "'Bebas Neue', sans-serif",
-            letterSpacing: "0.1em",
-          }}
-        >
-          MIDBURN
-        </h1>
-        <h2
-          className="text-lg font-semibold text-center text-amber-300 mb-5 tracking-widest"
-          style={{ fontFamily: "'Bebas Neue', sans-serif" }}
-        >
-          SCHEDULE
-        </h2>
+          <h1
+            className="text-3xl font-bold text-center text-amber-100 mb-1 tracking-wider"
+            style={{
+              fontFamily: "'Bebas Neue', sans-serif",
+              letterSpacing: "0.1em",
+            }}
+          >
+            MIDBURN
+          </h1>
+          <h2
+            className="text-lg font-semibold text-center text-amber-300 mb-5 tracking-widest"
+            style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+          >
+            SCHEDULE
+          </h2>
 
-        {/* Tribal divider */}
-        <div className="flex items-center justify-center gap-2 mb-5">
-          <div className="h-px flex-1 bg-gradient-to-r from-transparent to-amber-600"></div>
-          <div className="text-amber-500 text-xs">▲ ▼ ▲</div>
-          <div className="h-px flex-1 bg-gradient-to-l from-transparent to-amber-600"></div>
-        </div>
-        {/* Live Now Button */}
-        <button
-          onClick={() => setShowLiveNow(!showLiveNow)}
-          className={`w-full mb-4 px-4 py-3 rounded-xl font-bold text-sm transition-all border-2 ${
-            showLiveNow
-              ? "bg-gradient-to-br from-green-400 to-green-600 text-white border-green-300 shadow-lg"
-              : "bg-amber-100/90 text-amber-900 border-amber-800/70 hover:bg-amber-200 hover:border-amber-700"
-          }`}
-          style={{ fontFamily: "'Righteous', sans-serif" }}
-        >
-          {showLiveNow ? "🔴 LIVE NOW" : "🎵 מה מנגן עכשיו"}
-        </button>
-        <SearchBar
-          searchQuery={searchQuery}
-          onSearchChange={(query) => {
-            setSearchQuery(query);
-            if (query) setShowLiveNow(false);
-          }}
-        />
+          {/* Tribal divider */}
+          <div className="flex items-center justify-center gap-2 mb-5">
+            <div className="h-px flex-1 bg-gradient-to-r from-transparent to-amber-600"></div>
+            <div className="text-amber-500 text-xs">▲ ▼ ▲</div>
+            <div className="h-px flex-1 bg-gradient-to-l from-transparent to-amber-600"></div>
+          </div>
 
-        <div className={searchQuery ? "invisible h-0 overflow-hidden" : ""}>
-          <StageSelector
-            stages={stages}
-            selectedStageId={selectedStageId}
-            onSelectStage={(stageId) => {
-              setSelectedStageId(stageId);
-              setShowLiveNow(false);
+          {/* Live Now Button */}
+          <button
+            onClick={() => {
+              setShowLiveNow(!showLiveNow);
+              if (!showLiveNow) setSearchQuery("");
+            }}
+            className={`w-full mb-4 px-4 py-3 rounded-xl font-bold text-sm transition-all border-2 ${
+              showLiveNow
+                ? "bg-gradient-to-br from-green-400 to-green-600 text-white border-green-300 shadow-lg"
+                : "bg-amber-100/90 text-amber-900 border-amber-800/70 hover:bg-amber-200 hover:border-amber-700"
+            }`}
+            style={{ fontFamily: "'Righteous', sans-serif" }}
+          >
+            {showLiveNow ? "🔴 LIVE NOW" : "🎵 מה מנגן עכשיו"}
+          </button>
+
+          <SearchBar
+            searchQuery={searchQuery}
+            onSearchChange={(query) => {
+              setSearchQuery(query);
+              if (query) setShowLiveNow(false);
             }}
           />
+
+          <div className={searchQuery ? "invisible h-0 overflow-hidden" : ""}>
+            <StageSelector
+              stages={stages}
+              selectedStageId={selectedStageId}
+              onSelectStage={(stageId) => {
+                setSelectedStageId(stageId);
+                setShowLiveNow(false);
+              }}
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Spacer for fixed header */}
-      <div className="h-[500px]"></div>
-
+      {!showMapFullscreen && <div className="h-[300px]"></div>}
       {/* Content */}
-      <div className="px-6 pt-6 pb-10">
-        {showLiveNow ? (
+      <div
+        className={`${
+          selectedStageId === "map" && !showMapFullscreen
+            ? ""
+            : showMapFullscreen
+            ? "p-0"
+            : "px-6"
+        } ${showMapFullscreen ? "" : "pt-6 pb-10"}`}
+      >
+        {" "}
+        {selectedStageId === "map" ? (
+          <MapView
+            onClose={() => {
+              setShowMapFullscreen(false);
+              setSelectedStageId(stages[0].id);
+            }}
+          />
+        ) : showLiveNow ? (
           <LiveNowView liveSlots={getCurrentlyPlaying()} />
         ) : searchQuery ? (
           <SearchResults stages={stages} searchQuery={searchQuery} />
