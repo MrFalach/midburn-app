@@ -184,13 +184,7 @@ export const stages: Stage[] = [
     id: 'sunrise-kingdom',
     name: 'Sunrise Kingdom',
     days: [
-                  {
-        date: 'Sat 22.11',
-        slots: [
-          { startTime: '00:00', endTime: '01:00', artist: 'Sagigi' },
-          { startTime: '00:00', endTime: '02:00', artist: 'Delete Me' },
-        ],
-      },
+
 {
         date: 'Monday 24.11',
         slots: [
@@ -225,6 +219,13 @@ export const stages: Stage[] = [
           { startTime: '03:45', endTime: '05:00', artist: 'Rafael' },
           { startTime: '05:00', endTime: '06:30', artist: 'UZA B2B NOY' },
           { startTime: '06:30', endTime: '08:00', artist: 'Liran' },
+        ],
+      },
+                        {
+        date: 'Sat 22.11',
+        slots: [
+          { startTime: '00:00', endTime: '01:00', artist: 'Sagigi' },
+          { startTime: '00:00', endTime: '02:00', artist: 'Delete Me' },
         ],
       },
       {

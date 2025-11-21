@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from 'react';
 import type { Stage } from '../types/schedule';
 // import { useState, useEffect } from 'react';
 
@@ -56,15 +57,19 @@ function isSlotPlaying(dateString: string, startTime: string, endTime: string): 
 }
 
 export function StageSchedule({ stage }: StageScheduleProps) {
-  // const [currentTime, setCurrentTime] = useState(new Date());
+const liveSlotRef = useRef<HTMLDivElement>(null);
 
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     setCurrentTime(new Date());
-  //   }, 60000);
-
-  //   return () => clearInterval(timer);
-  // }, []);
+useEffect(() => {
+  // Scroll to live slot when component mounts
+  if (liveSlotRef.current) {
+    setTimeout(() => {
+      liveSlotRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    }, 300);
+  }
+}, [stage.id]);
 
   return (
     <div className="rounded-2xl overflow-hidden vintage-shadow burned-edges">
@@ -107,14 +112,15 @@ export function StageSchedule({ stage }: StageScheduleProps) {
                   const isPlaying = isSlotPlaying(day.date, slot.startTime, slot.endTime);
                   
                   return (
-                    <div
-                      key={slotIndex}
-                      className={`flex gap-4 p-3 border-b border-orange-900/20 last:border-b-0 transition-all ${
-                        isPlaying 
-                          ? 'bg-green-400/40 border-l-4 border-green-600 shadow-lg' 
-                          : 'hover:bg-orange-900/10'
-                      }`}
-                    >
+  <div
+    key={slotIndex}
+    ref={isPlaying ? liveSlotRef : null}
+    className={`flex gap-4 p-3 border-b border-orange-900/20 last:border-b-0 transition-all ${
+      isPlaying 
+        ? 'bg-green-400/40 border-l-4 border-green-600 shadow-lg' 
+        : 'hover:bg-orange-900/10'
+    }`}
+  >
                       <div className="flex-shrink-0 text-orange-950 flex items-center gap-2">
                         {isPlaying && <span className="text-green-600 text-lg animate-pulse">▶️</span>}
                         <div>

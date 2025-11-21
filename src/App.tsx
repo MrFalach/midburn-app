@@ -212,7 +212,7 @@ const getCurrentlyPlaying = () => {
   }`}
   style={{ fontFamily: "'Righteous', sans-serif" }}
 >
-  {showLiveNow ? '🔴 LIVE NOW' : '🎵 מה מנגן עכשיו?'}
+  {showLiveNow ? '🔴 LIVE NOW' : '🎵 מה מנגן עכשיו'}
 </button>
 <SearchBar 
   searchQuery={searchQuery}
@@ -235,7 +235,7 @@ const getCurrentlyPlaying = () => {
       </div>
       
       {/* Spacer for fixed header */}
-      <div className="h-[400px]"></div>
+      <div className="h-[500px]"></div>
       
       {/* Content */}
 <div className="pt-6 pb-10">
