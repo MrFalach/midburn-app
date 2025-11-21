@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -27,7 +28,7 @@ a:hover {
 body {
   background: linear-gradient(135deg, #451a03 0%, #7c2d12 50%, #a16207 100%);
   margin: 0;
-  display: flex;
+  /* display: flex; */
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
