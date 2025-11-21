@@ -12,6 +12,8 @@ function App() {
   const [isStandalone, setIsStandalone] = useState(false);
   const [selectedStageId, setSelectedStageId] = useState(stages[0].id);
   const [searchQuery, setSearchQuery] = useState('');
+  const [scrollY, setScrollY] = useState(0);
+  const [showHeader, setShowHeader] = useState(true);
 
   useEffect(() => {
     const standalone = window.matchMedia('(display-mode: standalone)').matches 
@@ -42,7 +44,61 @@ function App() {
     }
   }, []);
 
+// Handle scroll
+useEffect(() => {
+  let lastScrollY = window.scrollY;
+  let lastScrollTime = Date.now();
+  let ticking = false;
+
+  const handleScroll = () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const currentScrollY = window.scrollY;
+        const currentTime = Date.now();
+        const timeDiff = currentTime - lastScrollTime;
+        const scrollDiff = Math.abs(currentScrollY - lastScrollY);
+        
+        // Calculate scroll velocity (pixels per millisecond)
+        const velocity = scrollDiff / timeDiff;
+        
+        // Show header at top
+        if (currentScrollY < 100) {
+          setShowHeader(true);
+        } 
+        // Fast scroll down - hide immediately
+        else if (currentScrollY > lastScrollY && velocity > 1) {
+          setShowHeader(false);
+        }
+        // Slow scroll down - keep header visible
+        else if (currentScrollY > lastScrollY && velocity <= 1) {
+          // Don't hide on slow scroll
+        }
+        // Scrolling up - show header
+        else if (currentScrollY < lastScrollY) {
+          setShowHeader(true);
+        }
+        
+        setScrollY(currentScrollY);
+        lastScrollY = currentScrollY;
+        lastScrollTime = currentTime;
+        ticking = false;
+      });
+      
+      ticking = true;
+    }
+  };
+
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  return () => window.removeEventListener('scroll', handleScroll);
+}, []);
+
   const selectedStage = stages.find(stage => stage.id === selectedStageId) || stages[0];
+
+  // Scroll to top function
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setShowHeader(true);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-950 via-orange-900 to-yellow-800 desert-texture">
@@ -60,56 +116,86 @@ function App() {
         </div>
       )}
       
-{/* Header */}
-<div className="sticky top-0 bg-gradient-to-b from-amber-950/95 to-orange-900/95 backdrop-blur-sm shadow-2xl z-40 px-4 pt-6 pb-5 border-b-4 border-amber-600/50 min-h-[240px]">  {/* Sun decoration */}
-  <div className="flex justify-center mb-3">
-    <div className="relative w-12 h-12 sun-pulse">
-      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-300 to-orange-500 shadow-lg shadow-orange-500/50"></div>
-      <div className="absolute inset-1 rounded-full bg-gradient-to-br from-yellow-200 to-orange-400 flex items-center justify-center">
-        <span className="text-xl">☀️</span>
-      </div>
-    </div>
-  </div>
-  
-  <h1 className="text-3xl font-bold text-center text-amber-100 mb-1 tracking-wider" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '0.1em' }}>
-    MIDBURN
-  </h1>
-  <h2 className="text-lg font-semibold text-center text-amber-300 mb-5 tracking-widest" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
-    SCHEDULE
-  </h2>
-  
-  {/* Tribal divider */}
-  <div className="flex items-center justify-center gap-2 mb-5">
-    <div className="h-px flex-1 bg-gradient-to-r from-transparent to-amber-600"></div>
-    <div className="text-amber-500 text-xs">▲ ▼ ▲</div>
-    <div className="h-px flex-1 bg-gradient-to-l from-transparent to-amber-600"></div>
-  </div>
-  
-  <SearchBar 
-    searchQuery={searchQuery}
-    onSearchChange={setSearchQuery}
-  />
-  
-<div className={searchQuery ? 'invisible h-0 overflow-hidden' : ''}>
-  <StageSelector 
-    stages={stages}
-    selectedStageId={selectedStageId}
-    onSelectStage={setSelectedStageId}
-  />
-</div>
-</div>
+      {/* Scroll to top button */}
+      {!showHeader && scrollY > 200 && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-6 right-4 z-50 bg-gradient-to-br from-amber-400 to-orange-500 text-amber-950 p-4 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300"
+        >
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            strokeWidth={3} 
+            stroke="currentColor" 
+            className="w-6 h-6"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+          </svg>
+        </button>
+      )}
       
-{/* Content */}
-<div className="px-6 pt-6 pb-10">
-  {searchQuery ? (
-    <SearchResults 
-      stages={stages}
-      searchQuery={searchQuery}
-    />
-  ) : (
-    <StageSchedule stage={selectedStage} />
-  )}
-</div>
+      {/* Header with scroll animation */}
+      <div 
+        className="fixed top-0 left-0 right-0 bg-gradient-to-b from-amber-950/95 to-orange-900/95 backdrop-blur-sm shadow-2xl z-40 px-4 pt-6 pb-5 border-b-4 border-amber-600/50 min-h-[240px] transition-all duration-500 ease-in-out"
+        style={{
+          opacity: showHeader ? 1 : 0,
+          transform: showHeader ? 'translateY(0)' : 'translateY(-100%)',
+          pointerEvents: showHeader ? 'auto' : 'none'
+        }}
+      >
+        {/* Sun decoration */}
+        <div className="flex justify-center mb-3">
+          <div className="relative w-12 h-12 sun-pulse">
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-300 to-orange-500 shadow-lg shadow-orange-500/50"></div>
+            <div className="absolute inset-1 rounded-full bg-gradient-to-br from-yellow-200 to-orange-400 flex items-center justify-center">
+              <span className="text-xl">☀️</span>
+            </div>
+          </div>
+        </div>
+        
+        <h1 className="text-3xl font-bold text-center text-amber-100 mb-1 tracking-wider" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '0.1em' }}>
+          MIDBURN
+        </h1>
+        <h2 className="text-lg font-semibold text-center text-amber-300 mb-5 tracking-widest" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
+          SCHEDULE
+        </h2>
+        
+        {/* Tribal divider */}
+        <div className="flex items-center justify-center gap-2 mb-5">
+          <div className="h-px flex-1 bg-gradient-to-r from-transparent to-amber-600"></div>
+          <div className="text-amber-500 text-xs">▲ ▼ ▲</div>
+          <div className="h-px flex-1 bg-gradient-to-l from-transparent to-amber-600"></div>
+        </div>
+        
+        <SearchBar 
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+        />
+        
+        <div className={searchQuery ? 'invisible h-0 overflow-hidden' : ''}>
+          <StageSelector 
+            stages={stages}
+            selectedStageId={selectedStageId}
+            onSelectStage={setSelectedStageId}
+          />
+        </div>
+      </div>
+      
+      {/* Spacer for fixed header */}
+      <div className="h-[460px]"></div>
+      
+      {/* Content */}
+      <div className="px-6 pt-6 pb-10">
+        {searchQuery ? (
+          <SearchResults 
+            stages={stages}
+            searchQuery={searchQuery}
+          />
+        ) : (
+          <StageSchedule stage={selectedStage} />
+        )}
+      </div>
     </div>
   );
 }
