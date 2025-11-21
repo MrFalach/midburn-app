@@ -1,5 +1,5 @@
 import type { Stage } from '../types/schedule';
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
 
 interface StageScheduleProps {
   stage: Stage;
@@ -56,15 +56,15 @@ function isSlotPlaying(dateString: string, startTime: string, endTime: string): 
 }
 
 export function StageSchedule({ stage }: StageScheduleProps) {
-  const [currentTime, setCurrentTime] = useState(new Date());
+  // const [currentTime, setCurrentTime] = useState(new Date());
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 60000);
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setCurrentTime(new Date());
+  //   }, 60000);
 
-    return () => clearInterval(timer);
-  }, []);
+  //   return () => clearInterval(timer);
+  // }, []);
 
   return (
     <div className="rounded-2xl overflow-hidden vintage-shadow burned-edges">

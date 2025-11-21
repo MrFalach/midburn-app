@@ -169,6 +169,9 @@ button:focus-visible {
     linear-gradient(#fff 0 0) content-box, 
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
+   mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
   mask-composite: exclude;
   pointer-events: none;
   opacity: 0.6;
@@ -275,6 +278,9 @@ button:focus-visible {
     linear-gradient(#fff 0 0) content-box, 
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
+   mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
   mask-composite: exclude;
   pointer-events: none;
   filter: blur(1px);
@@ -291,3 +297,4 @@ button:focus-visible {
   pointer-events: none;
   z-index: 1;
 }
+
