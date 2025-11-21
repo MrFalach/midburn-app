@@ -15,7 +15,7 @@ export function StageSchedule({ stage }: StageScheduleProps) {
 
       <div className="p-3">
         {stage.days.map((day, dayIndex) => (
-          <div key={dayIndex} className="mb-4 last:mb-0">
+          <div key={dayIndex} className="mb-10 last:mb-0">
             <h3 className="text-base font-bold text-pink-700 mb-2 pb-2 border-b-2 border-pink-200">
               {day.date}
             </h3>
