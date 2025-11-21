@@ -13,7 +13,6 @@ function App() {
   const [selectedStageId, setSelectedStageId] = useState(stages[0].id);
   const [searchQuery, setSearchQuery] = useState('');
   const [scrollY, setScrollY] = useState(0);
-  const [showHeader, setShowHeader] = useState(true);
 
   useEffect(() => {
     const standalone = window.matchMedia('(display-mode: standalone)').matches 
@@ -44,61 +43,27 @@ function App() {
     }
   }, []);
 
-// Handle scroll
-useEffect(() => {
-  let lastScrollY = window.scrollY;
-  let lastScrollTime = Date.now();
-  let ticking = false;
+  // Handle scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
 
-  const handleScroll = () => {
-    if (!ticking) {
-      window.requestAnimationFrame(() => {
-        const currentScrollY = window.scrollY;
-        const currentTime = Date.now();
-        const timeDiff = currentTime - lastScrollTime;
-        const scrollDiff = Math.abs(currentScrollY - lastScrollY);
-        
-        // Calculate scroll velocity (pixels per millisecond)
-        const velocity = scrollDiff / timeDiff;
-        
-        // Show header at top
-        if (currentScrollY < 100) {
-          setShowHeader(true);
-        } 
-        // Fast scroll down - hide immediately
-        else if (currentScrollY > lastScrollY && velocity > 1) {
-          setShowHeader(false);
-        }
-        // Slow scroll down - keep header visible
-        else if (currentScrollY > lastScrollY && velocity <= 1) {
-          // Don't hide on slow scroll
-        }
-        // Scrolling up - show header
-        else if (currentScrollY < lastScrollY) {
-          setShowHeader(true);
-        }
-        
-        setScrollY(currentScrollY);
-        lastScrollY = currentScrollY;
-        lastScrollTime = currentTime;
-        ticking = false;
-      });
-      
-      ticking = true;
-    }
-  };
-
-  window.addEventListener('scroll', handleScroll, { passive: true });
-  return () => window.removeEventListener('scroll', handleScroll);
-}, []);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const selectedStage = stages.find(stage => stage.id === selectedStageId) || stages[0];
 
   // Scroll to top function
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    setShowHeader(true);
   };
+
+  // Calculate header visibility based on scroll position
+  const headerOpacity = Math.max(0, 1 - scrollY / 300);
+  const headerTranslateY = Math.min(scrollY / 2, 150);
+  const showScrollButton = scrollY > 200;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-950 via-orange-900 to-yellow-800 desert-texture">
@@ -117,7 +82,7 @@ useEffect(() => {
       )}
       
       {/* Scroll to top button */}
-      {!showHeader && scrollY > 200 && (
+      {showScrollButton && (
         <button
           onClick={scrollToTop}
           className="fixed bottom-6 right-4 z-50 bg-gradient-to-br from-amber-400 to-orange-500 text-amber-950 p-4 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300"
@@ -137,11 +102,11 @@ useEffect(() => {
       
       {/* Header with scroll animation */}
       <div 
-        className="fixed top-0 left-0 right-0 bg-gradient-to-b from-amber-950/95 to-orange-900/95 backdrop-blur-sm shadow-2xl z-40 px-4 pt-6 pb-5 border-b-4 border-amber-600/50 min-h-[240px] transition-all duration-500 ease-in-out"
+        className="fixed top-0 left-0 right-0 bg-gradient-to-b from-amber-950/95 to-orange-900/95 backdrop-blur-sm shadow-2xl z-40 px-4 pt-6 pb-5 border-b-4 border-amber-600/50 min-h-[240px] transition-all duration-300 ease-out"
         style={{
-          opacity: showHeader ? 1 : 0,
-          transform: showHeader ? 'translateY(0)' : 'translateY(-100%)',
-          pointerEvents: showHeader ? 'auto' : 'none'
+          opacity: headerOpacity,
+          transform: `translateY(-${headerTranslateY}px)`,
+          pointerEvents: headerOpacity < 0.3 ? 'none' : 'auto'
         }}
       >
         {/* Sun decoration */}
@@ -183,7 +148,7 @@ useEffect(() => {
       </div>
       
       {/* Spacer for fixed header */}
-      <div className="h-[460px]"></div>
+      <div className="h-[400px]"></div>
       
       {/* Content */}
       <div className="px-6 pt-6 pb-10">
