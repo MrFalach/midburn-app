@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import type { Stage } from '../types/schedule';
 // import { useState, useEffect } from 'react';
 
