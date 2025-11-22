@@ -317,7 +317,7 @@ function App() {
       <div className="h-[300px]"></div>
 
       {/* Content */}
-      <div className="px-6 pt-6 mt-66 pb-10">
+      <div className="px-6 pt-6 mt-40 pb-10">
         {showLiveNow ? (
           <LiveNowView liveSlots={getCurrentlyPlaying()} />
         ) : searchQuery ? (
