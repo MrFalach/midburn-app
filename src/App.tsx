@@ -276,7 +276,7 @@ function App() {
             className={`flex-1 px-3 py-3 rounded-xl font-bold text-xs transition-all border-2 whitespace-nowrap ${
               showLiveNow
                 ? "bg-gradient-to-br from-green-400 to-green-600 text-white border-green-300 shadow-lg"
-                : "bg-amber-100/90 text-amber-900 border-amber-800/70 hover:bg-amber-200 hover:border-amber-700"
+                : "bg-white/10 text-amber-100 border-white/20 hover:bg-white/15 hover:border-white/30"
             }`}
             style={{ fontFamily: "'Righteous', sans-serif" }}
           >
@@ -328,7 +328,7 @@ function App() {
       </div>
 
       {/* Footer with credit */}
-      <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-amber-950/90 to-transparent py-2 text-center text-xs text-amber-300 z-10">
+      <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-amber-950/90 to-transparent py-2 text-center text-[10px] text-amber-300 z-10">
         Made with ❤️ by <span className="font-semibold">Sagi Falach</span>
       </div>
 

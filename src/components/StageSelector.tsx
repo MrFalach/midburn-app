@@ -88,7 +88,7 @@ export function StageSelector({ stages, selectedStageId, onSelectStage }: StageS
             className={`flex-shrink-0 px-6 py-3 rounded-xl font-bold text-sm transition-all snap-center ${
               selectedStageId === stage.id
                 ? 'bg-gradient-to-br from-amber-400 to-orange-500 text-amber-950 shadow-lg scale-105'
-                : 'bg-amber-100/90 text-amber-900 hover:bg-amber-200 active:scale-95'
+                : 'bg-black text-amber-900 hover:bg-amber-200 active:scale-95'
             }`}
             style={{ fontFamily: "'Righteous', sans-serif" }}
           >
