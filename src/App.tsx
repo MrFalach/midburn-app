@@ -262,7 +262,7 @@ function App() {
         {/* Tribal divider */}
         <div className="flex items-center justify-center gap-2 mb-5">
           <div className="h-px flex-1 bg-gradient-to-r from-transparent to-amber-600"></div>
-          <div className="text-amber-500 text-xs">▲ ▼ ▲</div>
+          <div className="text-amber-500 text-[8px]">▲ ▼ ▲</div>
           <div className="h-px flex-1 bg-gradient-to-l from-transparent to-amber-600"></div>
         </div>
 
@@ -296,7 +296,7 @@ function App() {
         {/* Tribal divider */}
         <div className="flex items-center justify-center gap-2 mb-5">
           <div className="h-px flex-1 bg-gradient-to-r from-transparent to-amber-600"></div>
-          <div className="text-amber-500 text-xs">▲ ▼ ▲</div>
+          <div className="text-amber-500 text-[8px]">▲ ▼ ▲</div>
           <div className="h-px flex-1 bg-gradient-to-l from-transparent to-amber-600"></div>
         </div>
 
