@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import { StageSchedule } from './components/StageSchedule';
-import { StageSelector } from './components/StageSelector';
-import { SearchBar } from './components/SearchBar';
-import { SearchResults } from './components/SearchResults';
-import { LiveNowView } from './components/LiveNowView';
-import { MapView } from './components/MapView';
-import { stages } from './data/stages';
+import { useEffect, useState } from "react";
+import { StageSchedule } from "./components/StageSchedule";
+import { StageSelector } from "./components/StageSelector";
+import { SearchBar } from "./components/SearchBar";
+import { SearchResults } from "./components/SearchResults";
+import { LiveNowView } from "./components/LiveNowView";
+import { MapView } from "./components/MapView";
+import { stages } from "./data/stages";
 
 function App() {
   const [isReady, setIsReady] = useState(false);
@@ -13,30 +13,31 @@ function App() {
   const [hasSeenBefore, setHasSeenBefore] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
   const [selectedStageId, setSelectedStageId] = useState(stages[0].id);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [scrollY, setScrollY] = useState(0);
   const [showLiveNow, setShowLiveNow] = useState(false);
   const [showMap, setShowMap] = useState(false);
 
   useEffect(() => {
-    const standalone = window.matchMedia('(display-mode: standalone)').matches 
-      || (window.navigator as any).standalone 
-      || document.referrer.includes('android-app://');
-    
+    const standalone =
+      window.matchMedia("(display-mode: standalone)").matches ||
+      (window.navigator as any).standalone ||
+      document.referrer.includes("android-app://");
+
     setIsStandalone(standalone);
 
-    const hasSeenReady = localStorage.getItem('hasSeenReady');
+    const hasSeenReady = localStorage.getItem("hasSeenReady");
     setHasSeenBefore(!!hasSeenReady);
 
-    if ('serviceWorker' in navigator) {
+    if ("serviceWorker" in navigator) {
       navigator.serviceWorker.ready.then(() => {
-        console.log('Service Worker is ready!');
+        console.log("Service Worker is ready!");
         setIsReady(true);
-        
+
         if (!hasSeenReady && standalone) {
           setShowReadyMessage(true);
-          localStorage.setItem('hasSeenReady', 'true');
-          
+          localStorage.setItem("hasSeenReady", "true");
+
           setTimeout(() => {
             setShowReadyMessage(false);
           }, 3000);
@@ -53,15 +54,16 @@ function App() {
       setScrollY(window.scrollY);
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const selectedStage = stages.find(stage => stage.id === selectedStageId) || stages[0];
+  const selectedStage =
+    stages.find((stage) => stage.id === selectedStageId) || stages[0];
 
   // Scroll to top function
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   // Calculate header visibility based on scroll position
@@ -84,32 +86,38 @@ function App() {
     const currentMinutes = now.getMinutes();
     const currentTimeInMinutes = currentHours * 60 + currentMinutes;
 
-    stages.forEach(stage => {
-      stage.days.forEach(day => {
+    stages.forEach((stage) => {
+      stage.days.forEach((day) => {
         // Parse date
-        const parts = day.date.split(' ');
+        const parts = day.date.split(" ");
         if (parts.length < 2) return;
-        const [dayNum, month] = parts[1].split('.').map(Number);
+        const [dayNum, month] = parts[1].split(".").map(Number);
         const currentYear = now.getFullYear();
         const slotDate = new Date(currentYear, month - 1, dayNum);
-        
+
         // Check if same day
-        if (slotDate.getDate() === now.getDate() &&
-            slotDate.getMonth() === now.getMonth() &&
-            slotDate.getFullYear() === now.getFullYear()) {
-          
-          day.slots.forEach(slot => {
-            const [startHours, startMinutes] = slot.startTime.split(':').map(Number);
-            const [endHours, endMinutes] = slot.endTime.split(':').map(Number);
-            
+        if (
+          slotDate.getDate() === now.getDate() &&
+          slotDate.getMonth() === now.getMonth() &&
+          slotDate.getFullYear() === now.getFullYear()
+        ) {
+          day.slots.forEach((slot) => {
+            const [startHours, startMinutes] = slot.startTime
+              .split(":")
+              .map(Number);
+            const [endHours, endMinutes] = slot.endTime.split(":").map(Number);
+
             let startTimeInMinutes = startHours * 60 + startMinutes;
             let endTimeInMinutes = endHours * 60 + endMinutes;
-            
+
             if (endTimeInMinutes < startTimeInMinutes) {
               endTimeInMinutes += 24 * 60;
               if (currentTimeInMinutes < 720) {
                 const adjustedTime = currentTimeInMinutes + 24 * 60;
-                if (adjustedTime >= startTimeInMinutes && adjustedTime < endTimeInMinutes) {
+                if (
+                  adjustedTime >= startTimeInMinutes &&
+                  adjustedTime < endTimeInMinutes
+                ) {
                   results.push({
                     stageName: stage.name,
                     date: day.date,
@@ -120,7 +128,10 @@ function App() {
                 }
               }
             } else {
-              if (currentTimeInMinutes >= startTimeInMinutes && currentTimeInMinutes < endTimeInMinutes) {
+              if (
+                currentTimeInMinutes >= startTimeInMinutes &&
+                currentTimeInMinutes < endTimeInMinutes
+              ) {
                 results.push({
                   stageName: stage.name,
                   date: day.date,
@@ -142,7 +153,7 @@ function App() {
     <div className="min-h-screen bg-gradient-to-br from-amber-950 via-orange-900 to-yellow-800 desert-texture">
       {/* Tribal pattern decoration - top */}
       <div className="fixed top-0 left-0 right-0 h-2 bg-gradient-to-r from-transparent via-amber-600 to-transparent opacity-60 z-50"></div>
-      
+
       {!isReady && !hasSeenBefore && isStandalone && (
         <div className="fixed top-4 left-2 right-2 bg-amber-400 text-amber-900 px-3 py-2 rounded-lg shadow-lg font-semibold text-sm z-50 text-center">
           ⏳ טוען את האפליקציה לעבודה אופליין...
@@ -153,22 +164,26 @@ function App() {
           ✅ מוכן לעבודה אופליין!
         </div>
       )}
-      
+
       {/* Scroll to top button */}
       {showScrollButton && (
         <button
           onClick={scrollToTop}
           className="fixed bottom-6 right-4 z-50 bg-gradient-to-br from-amber-400 to-orange-500 text-amber-950 p-4 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300"
         >
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            fill="none" 
-            viewBox="0 0 24 24" 
-            strokeWidth={3} 
-            stroke="currentColor" 
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={3}
+            stroke="currentColor"
             className="w-6 h-6"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M4.5 15.75l7.5-7.5 7.5 7.5"
+            />
           </svg>
         </button>
       )}
@@ -179,25 +194,29 @@ function App() {
         className="fixed bottom-6 left-4 z-50 bg-gradient-to-br from-amber-400 to-orange-500 text-amber-950 p-4 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all"
         aria-label="Open map"
       >
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" 
-          fill="none" 
-          viewBox="0 0 24 24" 
-          strokeWidth={2.5} 
-          stroke="currentColor" 
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={2.5}
+          stroke="currentColor"
           className="w-6 h-6"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z"
+          />
         </svg>
       </button>
-      
+
       {/* Header with scroll animation */}
-      <div 
+      <div
         className="fixed top-0 left-0 right-0 bg-gradient-to-b from-amber-950/95 to-orange-900/95 backdrop-blur-sm shadow-2xl z-40 px-4 pt-6 pb-5 border-b-4 border-amber-600/50 min-h-[240px] transition-all duration-300 ease-out"
         style={{
           opacity: headerOpacity,
           transform: `translateY(-${headerTranslateY}px)`,
-          pointerEvents: headerOpacity < 0.3 ? 'none' : 'auto'
+          pointerEvents: headerOpacity < 0.3 ? "none" : "auto",
         }}
       >
         {/* Sun decoration */}
@@ -209,14 +228,23 @@ function App() {
             </div>
           </div>
         </div>
-        
-        <h1 className="text-3xl font-bold text-center text-amber-100 mb-1 tracking-wider" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '0.1em' }}>
+
+        <h1
+          className="text-3xl font-bold text-center text-amber-100 mb-1 tracking-wider"
+          style={{
+            fontFamily: "'Bebas Neue', sans-serif",
+            letterSpacing: "0.1em",
+          }}
+        >
           MIDBURN
         </h1>
-        <h2 className="text-lg font-semibold text-center text-amber-300 mb-5 tracking-widest" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
+        <h2
+          className="text-lg font-semibold text-center text-amber-300 mb-5 tracking-widest"
+          style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+        >
           SCHEDULE
         </h2>
-        
+
         {/* Tribal divider */}
         <div className="flex items-center justify-center gap-2 mb-5">
           <div className="h-px flex-1 bg-gradient-to-r from-transparent to-amber-600"></div>
@@ -228,28 +256,28 @@ function App() {
         <button
           onClick={() => {
             setShowLiveNow(!showLiveNow);
-            if (!showLiveNow) setSearchQuery('');
+            if (!showLiveNow) setSearchQuery("");
           }}
           className={`w-full mb-4 px-4 py-3 rounded-xl font-bold text-sm transition-all border-2 ${
             showLiveNow
-              ? 'bg-gradient-to-br from-green-400 to-green-600 text-white border-green-300 shadow-lg'
-              : 'bg-amber-100/90 text-amber-900 border-amber-800/70 hover:bg-amber-200 hover:border-amber-700'
+              ? "bg-gradient-to-br from-green-400 to-green-600 text-white border-green-300 shadow-lg"
+              : "bg-amber-100/90 text-amber-900 border-amber-800/70 hover:bg-amber-200 hover:border-amber-700"
           }`}
           style={{ fontFamily: "'Righteous', sans-serif" }}
         >
-          {showLiveNow ? '🔴 LIVE NOW' : '🎵 מה מנגן עכשיו?'}
+          {showLiveNow ? "🔴 LIVE NOW" : "🎵 מה מנגן עכשיו?"}
         </button>
-        
-        <SearchBar 
+
+        <SearchBar
           searchQuery={searchQuery}
           onSearchChange={(query) => {
             setSearchQuery(query);
             if (query) setShowLiveNow(false);
           }}
         />
-        
-        <div className={searchQuery ? 'invisible h-0 overflow-hidden' : ''}>
-          <StageSelector 
+
+        <div className={searchQuery ? "invisible h-0 overflow-hidden" : ""}>
+          <StageSelector
             stages={stages}
             selectedStageId={selectedStageId}
             onSelectStage={(stageId) => {
@@ -259,24 +287,30 @@ function App() {
           />
         </div>
       </div>
-      
+
       {/* Spacer for fixed header */}
       <div className="h-[300px]"></div>
-      
+
       {/* Content */}
       <div className="px-6 pt-6 mt-60 pb-10">
         {showLiveNow ? (
           <LiveNowView liveSlots={getCurrentlyPlaying()} />
         ) : searchQuery ? (
-          <SearchResults 
-            stages={stages}
-            searchQuery={searchQuery}
-          />
+          <SearchResults stages={stages} searchQuery={searchQuery} />
         ) : (
           <StageSchedule stage={selectedStage} />
         )}
       </div>
-
+      {/* Overlay to close keyboard when clicking outside */}
+      {searchQuery && (
+        <div
+          className="fixed inset-0 z-30"
+          onClick={() => {
+            document.activeElement instanceof HTMLElement &&
+              document.activeElement.blur();
+          }}
+        />
+      )}
       {/* Map view */}
       {showMap && <MapView onClose={() => setShowMap(false)} />}
     </div>
