@@ -245,16 +245,19 @@ function App() {
           SCHEDULE
         </h2>
 
-<div className="flex items-center justify-center gap-1 mb-4">
-  <span className="text-sm font-semibold text-black" style={{ fontFamily: 'Arial, sans-serif' }}>
-    By
-  </span>
-  <img 
-    src="/midbar-camp-logo.png" 
-    alt="Midbar Camp" 
-    className="h-14 object-contain brightness-0"
-  />
-</div>
+        <div className="flex items-center justify-center gap-1 mb-4">
+          <span
+            className="text-sm font-semibold text-black"
+            style={{ fontFamily: "Arial, sans-serif" }}
+          >
+            By
+          </span>
+          <img
+            src="/midbar-camp-logo.png"
+            alt="Midbar Camp"
+            className="h-14 object-contain brightness-0"
+          />
+        </div>
 
         {/* Tribal divider */}
         <div className="flex items-center justify-center gap-2 mb-5">
@@ -263,30 +266,41 @@ function App() {
           <div className="h-px flex-1 bg-gradient-to-l from-transparent to-amber-600"></div>
         </div>
 
-        {/* Live Now Button */}
-        <button
-          onClick={() => {
-            setShowLiveNow(!showLiveNow);
-            if (!showLiveNow) setSearchQuery("");
-          }}
-          className={`w-full mb-4 px-4 py-3 rounded-xl font-bold text-sm transition-all border-2 ${
-            showLiveNow
-              ? "bg-gradient-to-br from-green-400 to-green-600 text-white border-green-300 shadow-lg"
-              : "bg-amber-100/90 text-amber-900 border-amber-800/70 hover:bg-amber-200 hover:border-amber-700"
-          }`}
-          style={{ fontFamily: "'Righteous', sans-serif" }}
-        >
-          {showLiveNow ? "🔴 LIVE NOW" : "🎵 מה מנגן עכשיו?"}
-        </button>
+        {/* Live Now Button and Search Bar side by side */}
+        <div className="flex gap-2 mb-4">
+          <button
+            onClick={() => {
+              setShowLiveNow(!showLiveNow);
+              if (!showLiveNow) setSearchQuery("");
+            }}
+            className={`flex-1 px-3 py-3 rounded-xl font-bold text-xs transition-all border-2 whitespace-nowrap ${
+              showLiveNow
+                ? "bg-gradient-to-br from-green-400 to-green-600 text-white border-green-300 shadow-lg"
+                : "bg-amber-100/90 text-amber-900 border-amber-800/70 hover:bg-amber-200 hover:border-amber-700"
+            }`}
+            style={{ fontFamily: "'Righteous', sans-serif" }}
+          >
+            {showLiveNow ? "🔴 LIVE" : "💃 LIVE NOW"}
+          </button>
 
-        <SearchBar
-          searchQuery={searchQuery}
-          onSearchChange={(query) => {
-            setSearchQuery(query);
-            if (query) setShowLiveNow(false);
-          }}
-        />
+          <div className="flex-1">
+            <SearchBar
+              searchQuery={searchQuery}
+              onSearchChange={(query) => {
+                setSearchQuery(query);
+                if (query) setShowLiveNow(false);
+              }}
+            />
+          </div>
+        </div>
+        {/* Tribal divider */}
+        <div className="flex items-center justify-center gap-2 mb-5">
+          <div className="h-px flex-1 bg-gradient-to-r from-transparent to-amber-600"></div>
+          <div className="text-amber-500 text-xs">▲ ▼ ▲</div>
+          <div className="h-px flex-1 bg-gradient-to-l from-transparent to-amber-600"></div>
+        </div>
 
+        {/* Stage Selector */}
         <div className={searchQuery ? "invisible h-0 overflow-hidden" : ""}>
           <StageSelector
             stages={stages}
@@ -303,7 +317,7 @@ function App() {
       <div className="h-[300px]"></div>
 
       {/* Content */}
-      <div className="px-6 pt-6 mt-60 pb-10">
+      <div className="px-6 pt-6 mt-66 pb-10">
         {showLiveNow ? (
           <LiveNowView liveSlots={getCurrentlyPlaying()} />
         ) : searchQuery ? (
@@ -312,6 +326,12 @@ function App() {
           <StageSchedule stage={selectedStage} />
         )}
       </div>
+
+      {/* Footer with credit */}
+      <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-amber-950/90 to-transparent py-2 text-center text-xs text-amber-300 z-10">
+        Made with ❤️ by <span className="font-semibold">Sagi Falach</span>
+      </div>
+
       {/* Overlay to close keyboard when clicking outside */}
       {searchQuery && (
         <div

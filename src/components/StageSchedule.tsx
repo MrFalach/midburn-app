@@ -76,7 +76,7 @@ export function StageSchedule({ stage }: StageScheduleProps) {
   }, [stage.id]);
 
   return (
-    <Card title={stage.name} icon="🔥">
+    <Card title={stage.name}>
       {stage.days.map((day, dayIndex) => (
         <div key={dayIndex} className="mb-10 last:mb-0">
           <div className="flex items-center gap-2 mb-4">

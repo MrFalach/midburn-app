@@ -79,16 +79,6 @@ export const stages: Stage[] = [
     ],
   },
   {
-    id: "pixel",
-    name: "Pixel",
-    days: [
-      {
-        date: "Thursday 27.11",
-        slots: [{ startTime: "23:00", endTime: "02:30", artist: "Genish" }],
-      },
-    ],
-  },
-  {
     id: "pony-riders",
     name: "Pony Riders",
     days: [
@@ -235,16 +225,6 @@ export const stages: Stage[] = [
           { startTime: "03:30", endTime: "05:00", artist: "Kino Todo" },
           { startTime: "05:00", endTime: "08:00", artist: "freedom fighter" },
         ],
-      },
-    ],
-  },
-  {
-    id: "art-catalan",
-    name: "Art Catalan",
-    days: [
-      {
-        date: "Friday 28.11",
-        slots: [{ startTime: "16:30", endTime: "19:00", artist: "Genish" }],
       },
     ],
   },
