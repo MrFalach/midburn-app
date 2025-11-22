@@ -239,11 +239,22 @@ function App() {
           MIDBURN
         </h1>
         <h2
-          className="text-lg font-semibold text-center text-amber-300 mb-5 tracking-widest"
+          className="text-lg font-semibold text-center text-amber-300 mb-2 tracking-widest"
           style={{ fontFamily: "'Bebas Neue', sans-serif" }}
         >
           SCHEDULE
         </h2>
+
+<div className="flex items-center justify-center gap-1 mb-4">
+  <span className="text-sm font-semibold text-black" style={{ fontFamily: 'Arial, sans-serif' }}>
+    By
+  </span>
+  <img 
+    src="/midbar-camp-logo.png" 
+    alt="Midbar Camp" 
+    className="h-14 object-contain brightness-0"
+  />
+</div>
 
         {/* Tribal divider */}
         <div className="flex items-center justify-center gap-2 mb-5">
