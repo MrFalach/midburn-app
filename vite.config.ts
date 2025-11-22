@@ -9,8 +9,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['icon-192.png', 'icon-512.png'],
       manifest: {
-        name: 'Midburn Schedule',
-        short_name: 'Midburn',
+        name: '🌵 Midbar Schedule',
+        short_name: '🌵 Midbar',
         description: 'לוח זמנים של דיג\'ייז בפסטיבל מידברן',
         theme_color: '#7c3aed',
         background_color: '#7c3aed',
