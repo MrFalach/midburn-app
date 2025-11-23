@@ -379,7 +379,7 @@ function App() {
       {/* Footer with credit - clickable */}
       <button
         onClick={() => setShowPasswordPrompt(true)}
-        className="fixed bottom-2 left-0 right-0 py-3 text-center text-sm text-amber-300/80 hover:text-amber-200 transition-colors z-30 hover:scale-105 transition-all"
+        className="fixed bottom-2 left-0 right-0 py-3 text-xs text-center text-amber-300/80 z-30"
       >
         Made with ❤️ by Sagi Falach
       </button>
