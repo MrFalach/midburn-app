@@ -304,23 +304,26 @@ function App() {
         >
           SCHEDULE
         </h2>
-        <div className="flex flex-col items-center justify-center gap-1 mb-4">
+        <div className="flex flex items-center justify-center gap-1 mb-4">
           <span
-            className="text-sm font-semibold text-gray-800"
-            style={{ fontFamily: "Arial, sans-serif" }}
+            className="text-sm font-semibold text-white"
+            style={{
+              fontFamily: "Arial, sans-serif",
+              WebkitTextStroke: "1px black",
+            }}
           >
             By
           </span>
           <img
             src="/midbar-camp-logo.png"
             alt="Midbar Camp"
-            className="h-8 object-contain brightness-0"
+            className="h-12 object-contain brightness-0"
           />
         </div>
         {/* Tribal divider */}
         <div className="flex items-center justify-center gap-2 mb-5">
           <div className="h-px flex-1 bg-gradient-to-r from-transparent to-amber-600"></div>
-          <div className="text-amber-500 text-xs">▲ ▼ ▲</div>
+          <div className="text-amber-500 text-[8px]">▲ ▼ ▲</div>
           <div className="h-px flex-1 bg-gradient-to-l from-transparent to-amber-600"></div>
         </div>
         {/* Live Now Button and Search Bar side by side */}
