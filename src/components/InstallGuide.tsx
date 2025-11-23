@@ -35,17 +35,17 @@ export function InstallGuide({ onClose }: InstallGuideProps) {
   // Android steps - תוכל להוסיף תמונות גם לזה
   const androidSteps = [
     {
-      image: null,
+      image: "/install-android-1.jpeg",
       title: "שלב 1",
       description: "לחץ על תפריט (3 נקודות) בפינה הימנית העליונה",
     },
     {
-      image: null,
+      image: "/install-android-2.jpeg",
       title: "שלב 2",
       description: 'בחר "התקן אפליקציה" או "הוסף למסך הבית"',
     },
     {
-      image: null,
+      image: "/install-android-3.jpeg",
       title: "שלב 3",
       description: "אשר את ההתקנה והאפליקציה תתווסף למסך הבית!",
     },
