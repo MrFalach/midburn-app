@@ -9,6 +9,7 @@ import { InstallGuide } from "./components/InstallGuide";
 import { PasswordPrompt } from "./components/PasswordPrompt";
 import { stages } from "./data/stages";
 import { Toast } from "./components/Toast";
+import { FullscreenSearch } from "./components/FullscreenSearch";
 
 function App() {
   const [isReady, setIsReady] = useState(false);
@@ -17,6 +18,7 @@ function App() {
   const [isStandalone, setIsStandalone] = useState(false);
   const [selectedStageId, setSelectedStageId] = useState(stages[0].id);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isFullscreenSearch, setIsFullscreenSearch] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [showLiveNow, setShowLiveNow] = useState(false);
   const [showMap, setShowMap] = useState(false);
@@ -344,6 +346,7 @@ function App() {
                 setSearchQuery(query);
                 if (query) setShowLiveNow(false);
               }}
+              onFocus={() => setIsFullscreenSearch(true)}
             />
           </div>
         </div>
@@ -366,15 +369,16 @@ function App() {
       <div className="h-[300px]"></div>
 
       {/* Content */}
-      <div className="px-6 pt-6 pb-10">
-        {showLiveNow ? (
-          <LiveNowView liveSlots={getCurrentlyPlaying()} />
-        ) : searchQuery ? (
-          <SearchResults stages={stages} searchQuery={searchQuery} />
-        ) : (
-          <StageSchedule stage={selectedStage} />
-        )}
-      </div>
+      {/* Content */}
+      {!isFullscreenSearch && (
+        <div className="px-6 pt-6 pb-10">
+          {showLiveNow ? (
+            <LiveNowView liveSlots={getCurrentlyPlaying()} />
+          ) : (
+            <StageSchedule stage={selectedStage} />
+          )}
+        </div>
+      )}
 
       {/* Footer with credit - clickable */}
       <button
@@ -509,6 +513,18 @@ function App() {
         <Toast
           message="הצפייה למנויים בלבד"
           onClose={() => setShowLockedToast(false)}
+        />
+      )}
+      {/* Fullscreen Search */}
+      {isFullscreenSearch && (
+        <FullscreenSearch
+          stages={stages}
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          onClose={() => {
+            setIsFullscreenSearch(false);
+            setSearchQuery("");
+          }}
         />
       )}
     </div>
