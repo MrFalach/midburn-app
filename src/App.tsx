@@ -228,7 +228,7 @@ function App() {
       {showScrollButton && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-6 right-4 z-50 bg-gradient-to-br from-amber-400 to-orange-500 text-amber-950 p-4 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300"
+          className="fixed bottom-6 right-4 z-50 bg-gradient-to-br from-amber-400 to-orange-500 text-amber-950 p-3 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -236,7 +236,7 @@ function App() {
             viewBox="0 0 24 24"
             strokeWidth={3}
             stroke="currentColor"
-            className="w-6 h-6"
+            className="w-4.5 h-4.5"
           >
             <path
               strokeLinecap="round"
@@ -250,7 +250,7 @@ function App() {
       {/* Map button */}
       <button
         onClick={() => setShowMap(true)}
-        className="fixed bottom-6 left-4 z-50 bg-gradient-to-br from-amber-400 to-orange-500 text-amber-950 p-4 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all"
+        className="fixed bottom-6 left-4 z-50 bg-gradient-to-br from-amber-400 to-orange-500 text-amber-950 p-3 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all"
         aria-label="Open map"
       >
         <svg
@@ -259,7 +259,7 @@ function App() {
           viewBox="0 0 24 24"
           strokeWidth={2.5}
           stroke="currentColor"
-          className="w-6 h-6"
+          className="w-4.5 h-4.5"
         >
           <path
             strokeLinecap="round"
@@ -354,17 +354,35 @@ function App() {
         </div>
         {/* Live Now Button and Search Bar side by side */}
         <div className="flex gap-2 mb-4">
-          <button
-            onClick={() => setShowLiveNow(!showLiveNow)}
-            className={`flex-1 px-4 py-3 rounded-xl text-sm transition-all border whitespace-nowrap ${
-              showLiveNow
-                ? "bg-green-500 text-white border-green-400 shadow-lg shadow-green-500/50"
-                : "bg-amber-900/40 text-amber-100 border-amber-700/60 hover:bg-amber-900/50 hover:border-amber-700/80"
-            }`}
-            style={{ fontFamily: "'Righteous', sans-serif" }}
-          >
-            {showLiveNow ? "🔴 LIVE" : "🎵 LIVE"}
-          </button>
+<button
+  onClick={() => setShowLiveNow(!showLiveNow)}
+  className={`flex-1 px-4 py-3 rounded-xl text-sm transition-all border whitespace-nowrap flex items-center justify-center gap-2 ${
+    showLiveNow
+      ? "bg-green-500 text-white border-green-400 shadow-lg shadow-green-500/50"
+      : "bg-amber-900/40 text-amber-100 border-amber-700/60 hover:bg-amber-900/50 hover:border-amber-700/80"
+  }`}
+  style={{ fontFamily: "'Righteous', sans-serif" }}
+>
+  {showLiveNow ? (
+    <>
+      <span className="relative flex h-2 w-2">
+        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+        <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+      </span>
+      <span>LIVE</span>
+    </>
+  ) : (
+    <>
+      {/* Music bars animation */}
+      <div className="flex items-end gap-0.5 h-4">
+        <div className="w-1 bg-amber-100 rounded-t animate-music-bar-1"></div>
+        <div className="w-1 bg-amber-100 rounded-t animate-music-bar-2"></div>
+        <div className="w-1 bg-amber-100 rounded-t animate-music-bar-3"></div>
+      </div>
+      <span>LIVE</span>
+    </>
+  )}
+</button>
 
           <div className="flex-1">
             <SearchBar
