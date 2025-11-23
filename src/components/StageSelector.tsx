@@ -61,7 +61,7 @@ export function StageSelector({
       {/* Left arrow indicator */}
       {canScrollLeft && (
         <div className="absolute left-0 top-0 bottom-2 w-8 flex items-center justify-start pointer-events-none z-10">
-          <div className="text-amber-300 animate-pulse">
+          <div className="text-gray-900 animate-pulse bg-amber-100/80 rounded-full p-1">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -83,7 +83,7 @@ export function StageSelector({
       {/* Right arrow indicator */}
       {canScrollRight && (
         <div className="absolute right-0 top-0 bottom-2 w-8 flex items-center justify-end pointer-events-none z-10">
-          <div className="text-amber-300 animate-pulse">
+          <div className="text-gray-900 animate-pulse bg-amber-100/80 rounded-full p-1">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
