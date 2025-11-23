@@ -5,8 +5,10 @@ import { SearchBar } from "./components/SearchBar";
 import { SearchResults } from "./components/SearchResults";
 import { LiveNowView } from "./components/LiveNowView";
 import { MapView } from "./components/MapView";
-import { stages } from "./data/stages";
 import { InstallGuide } from "./components/InstallGuide";
+import { PasswordPrompt } from "./components/PasswordPrompt";
+import { stages } from "./data/stages";
+import { Toast } from "./components/Toast";
 
 function App() {
   const [isReady, setIsReady] = useState(false);
@@ -20,6 +22,11 @@ function App() {
   const [showMap, setShowMap] = useState(false);
   const [showInstallGuide, setShowInstallGuide] = useState(false);
   const [showInstallPrompt, setShowInstallPrompt] = useState(false);
+  const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
+  const [isParadiseUnlocked, setIsParadiseUnlocked] = useState(() => {
+    return localStorage.getItem("paradiseUnlocked") === "true";
+  });
+  const [showLockedToast, setShowLockedToast] = useState(false);
 
   useEffect(() => {
     const standalone =
@@ -77,6 +84,12 @@ function App() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Save paradise unlock state
+  useEffect(() => {
+    if (isParadiseUnlocked) {
+      localStorage.setItem("paradiseUnlocked", "true");
+    }
+  }, [isParadiseUnlocked]);
   const selectedStage =
     stages.find((stage) => stage.id === selectedStageId) || stages[0];
 
@@ -238,20 +251,10 @@ function App() {
           pointerEvents: headerOpacity < 0.3 ? "none" : "auto",
         }}
       >
-        {/* Sun decoration */}
-        <div className="flex justify-center mb-3">
-          <div className="relative w-12 h-12 sun-pulse">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-300 to-orange-500 shadow-lg shadow-orange-500/50"></div>
-            <div className="absolute inset-1 rounded-full bg-gradient-to-br from-yellow-200 to-orange-400 flex items-center justify-center">
-              <span className="text-xl">☀️</span>
-            </div>
-          </div>
-        </div>
-
         {/* Install Guide Button */}
         <button
           onClick={() => setShowInstallGuide(true)}
-          className="absolute top-4 left-4 text-amber-200 hover:text-white transition-colors"
+          className="absolute top-4 left-4 bg-amber-900/50 p-2 rounded-lg text-amber-100 hover:bg-amber-800/60 hover:text-white transition-all border border-amber-700/50"
           aria-label="Install guide"
         >
           <svg
@@ -270,6 +273,16 @@ function App() {
           </svg>
         </button>
 
+        {/* Sun decoration */}
+        <div className="flex justify-center mb-3">
+          <div className="relative w-12 h-12 sun-pulse">
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-300 to-orange-500 shadow-lg shadow-orange-500/50"></div>
+            <div className="absolute inset-1 rounded-full bg-gradient-to-br from-yellow-200 to-orange-400 flex items-center justify-center">
+              <span className="text-xl">☀️</span>
+            </div>
+          </div>
+        </div>
+
         <h1
           className="text-3xl font-bold text-center text-amber-100 mb-1 tracking-wider"
           style={{
@@ -286,9 +299,9 @@ function App() {
           SCHEDULE
         </h2>
 
-        <div className="flex items-center justify-center gap-1 mb-4">
+        <div className="flex flex-col items-center justify-center gap-1 mb-4">
           <span
-            className="text-sm font-semibold text-black"
+            className="text-sm font-semibold text-gray-800"
             style={{ fontFamily: "Arial, sans-serif" }}
           >
             By
@@ -296,14 +309,14 @@ function App() {
           <img
             src="/midbar-camp-logo.png"
             alt="Midbar Camp"
-            className="h-18 object-contain brightness-0"
+            className="h-8 object-contain brightness-0"
           />
         </div>
 
         {/* Tribal divider */}
         <div className="flex items-center justify-center gap-2 mb-5">
           <div className="h-px flex-1 bg-gradient-to-r from-transparent to-amber-600"></div>
-          <div className="text-amber-500 text-[6px]">▲ ▼ ▲</div>
+          <div className="text-amber-500 text-xs">▲ ▼ ▲</div>
           <div className="h-px flex-1 bg-gradient-to-l from-transparent to-amber-600"></div>
         </div>
 
@@ -314,14 +327,14 @@ function App() {
               setShowLiveNow(!showLiveNow);
               if (!showLiveNow) setSearchQuery("");
             }}
-            className={`flex-1 px-3 py-3 rounded-xl font-bold text-xs transition-all border-2 whitespace-nowrap ${
+            className={`flex-1 px-4 py-3 rounded-xl text-sm transition-all border whitespace-nowrap ${
               showLiveNow
-                ? "bg-gradient-to-br from-green-400 to-green-600 text-white border-green-300 shadow-lg"
-                : "bg-white/10 text-amber-100 border-white/20 hover:bg-white/15 hover:border-white/30"
+                ? "bg-green-500 text-white border-green-400 shadow-lg shadow-green-500/50"
+                : "bg-amber-900/40 text-amber-100 border-amber-700/60 hover:bg-amber-900/50 hover:border-amber-700/80"
             }`}
             style={{ fontFamily: "'Righteous', sans-serif" }}
           >
-            {showLiveNow ? "🔴 LIVE" : "💃 LIVE NOW"}
+            {showLiveNow ? "🔴 LIVE" : "🎵 LIVE"}
           </button>
 
           <div className="flex-1">
@@ -334,18 +347,13 @@ function App() {
             />
           </div>
         </div>
-        {/* Tribal divider */}
-        <div className="flex items-center justify-center gap-2 mb-5">
-          <div className="h-px flex-1 bg-gradient-to-r from-transparent to-amber-600"></div>
-          <div className="text-amber-500 text-[6px]">▲ ▼ ▲</div>
-          <div className="h-px flex-1 bg-gradient-to-l from-transparent to-amber-600"></div>
-        </div>
 
-        {/* Stage Selector */}
         <div className={searchQuery ? "invisible h-0 overflow-hidden" : ""}>
           <StageSelector
             stages={stages}
             selectedStageId={selectedStageId}
+            isParadiseUnlocked={isParadiseUnlocked}
+            onLockedClick={() => setShowLockedToast(true)}
             onSelectStage={(stageId) => {
               setSelectedStageId(stageId);
               setShowLiveNow(false);
@@ -358,7 +366,7 @@ function App() {
       <div className="h-[300px]"></div>
 
       {/* Content */}
-      <div className="px-6 pt-6 mt-40 pb-10">
+      <div className="px-6 pt-6 pb-10">
         {showLiveNow ? (
           <LiveNowView liveSlots={getCurrentlyPlaying()} />
         ) : searchQuery ? (
@@ -368,27 +376,22 @@ function App() {
         )}
       </div>
 
-      {/* Footer with credit */}
-      <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-amber-950/90 to-transparent py-2 text-center text-[8px] text-amber-300 z-10">
-        Made with ❤️ by <span className="font-semibold">Sagi Falach</span>
-      </div>
+      {/* Footer with credit - clickable */}
+      <button
+        onClick={() => setShowPasswordPrompt(true)}
+        className="fixed bottom-2 left-0 right-0 py-3 text-center text-sm text-amber-300/80 hover:text-amber-200 transition-colors z-30 hover:scale-105 transition-all"
+      >
+        Made with ❤️ by Sagi Falach
+      </button>
 
-      {/* Overlay to close keyboard when clicking outside */}
-      {searchQuery && (
-        <div
-          className="fixed inset-0 z-30"
-          onClick={() => {
-            document.activeElement instanceof HTMLElement &&
-              document.activeElement.blur();
-          }}
-        />
-      )}
       {/* Map view */}
       {showMap && <MapView onClose={() => setShowMap(false)} />}
+
       {/* Install guide */}
       {showInstallGuide && (
         <InstallGuide onClose={() => setShowInstallGuide(false)} />
       )}
+
       {/* Install Prompt */}
       {showInstallPrompt && !isStandalone && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-4 animate-fade-in">
@@ -491,6 +494,22 @@ function App() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Password prompt */}
+      {showPasswordPrompt && (
+        <PasswordPrompt
+          onClose={() => setShowPasswordPrompt(false)}
+          onSuccess={() => setIsParadiseUnlocked(true)}
+        />
+      )}
+
+      {/* Toast message for locked stage */}
+      {showLockedToast && (
+        <Toast
+          message="הצפייה למנויים בלבד"
+          onClose={() => setShowLockedToast(false)}
+        />
       )}
     </div>
   );
