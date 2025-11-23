@@ -9,6 +9,7 @@ import { PasswordPrompt } from "./components/PasswordPrompt";
 import { stages } from "./data/stages";
 import { Toast } from "./components/Toast";
 import { FullscreenSearch } from "./components/FullscreenSearch";
+import { FullscreenLiveNow } from "./components/FullscreenLiveNow";
 
 function App() {
   const [isReady, setIsReady] = useState(false);
@@ -28,7 +29,7 @@ function App() {
     return localStorage.getItem("paradiseUnlocked") === "true";
   });
   const [showLockedToast, setShowLockedToast] = useState(false);
-const [isUpdating, setIsUpdating] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
     const standalone =
@@ -93,27 +94,29 @@ const [isUpdating, setIsUpdating] = useState(false);
     }
   }, [isParadiseUnlocked]);
   // Detect service worker updates
-useEffect(() => {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.ready.then((registration) => {
-      registration.addEventListener('updatefound', () => {
-        const newWorker = registration.installing;
-        if (newWorker) {
-          setIsUpdating(true);
-          newWorker.addEventListener('statechange', () => {
-            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-              // Update is ready
-              setTimeout(() => {
-                window.location.reload();
-              }, 1000);
-            }
-          });
-        }
+  useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.ready.then((registration) => {
+        registration.addEventListener("updatefound", () => {
+          const newWorker = registration.installing;
+          if (newWorker) {
+            setIsUpdating(true);
+            newWorker.addEventListener("statechange", () => {
+              if (
+                newWorker.state === "installed" &&
+                navigator.serviceWorker.controller
+              ) {
+                // Update is ready
+                setTimeout(() => {
+                  window.location.reload();
+                }, 1000);
+              }
+            });
+          }
+        });
       });
-    });
-  }
-}, []);
-
+    }
+  }, []);
 
   const selectedStage =
     stages.find((stage) => stage.id === selectedStageId) || stages[0];
@@ -353,10 +356,7 @@ useEffect(() => {
         {/* Live Now Button and Search Bar side by side */}
         <div className="flex gap-2 mb-4">
           <button
-            onClick={() => {
-              setShowLiveNow(!showLiveNow);
-              if (!showLiveNow) setSearchQuery("");
-            }}
+            onClick={() => setShowLiveNow(!showLiveNow)}
             className={`flex-1 px-4 py-3 rounded-xl text-sm transition-all border whitespace-nowrap ${
               showLiveNow
                 ? "bg-green-500 text-white border-green-400 shadow-lg shadow-green-500/50"
@@ -396,14 +396,9 @@ useEffect(() => {
       <div className="h-[300px]"></div>
 
       {/* Content */}
-      {/* Content */}
-      {!isFullscreenSearch && (
+      {!isFullscreenSearch && !showLiveNow && (
         <div className="px-6 pt-6 pb-10">
-          {showLiveNow ? (
-            <LiveNowView liveSlots={getCurrentlyPlaying()} />
-          ) : (
-            <StageSchedule stage={selectedStage} />
-          )}
+          <StageSchedule stage={selectedStage} />
         </div>
       )}
 
@@ -556,30 +551,50 @@ useEffect(() => {
       )}
 
       {/* Updating overlay */}
-{isUpdating && (
-  <div className="fixed inset-0 z-50 bg-gradient-to-br from-amber-950 via-orange-900 to-yellow-800 flex flex-col items-center justify-center">
-    {/* Spinning sun */}
-    <div className="relative w-24 h-24 mb-6 animate-spin-slow">
-      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-300 to-orange-500 shadow-lg shadow-orange-500/50"></div>
-      <div className="absolute inset-2 rounded-full bg-gradient-to-br from-yellow-200 to-orange-400 flex items-center justify-center">
-        <span className="text-4xl">☀️</span>
-      </div>
-    </div>
-    
-    {/* Text */}
-    <h2 className="text-2xl font-bold text-amber-100 mb-2" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
-      מעדכן גרסה חדשה
-    </h2>
-    <p className="text-amber-300">רגע אחד...</p>
-    
-    {/* Dots animation */}
-    <div className="flex gap-2 mt-4">
-      <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
-      <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-      <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
-    </div>
-  </div>
-)}
+      {isUpdating && (
+        <div className="fixed inset-0 z-50 bg-gradient-to-br from-amber-950 via-orange-900 to-yellow-800 flex flex-col items-center justify-center">
+          {/* Spinning sun */}
+          <div className="relative w-24 h-24 mb-6 animate-spin-slow">
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-300 to-orange-500 shadow-lg shadow-orange-500/50"></div>
+            <div className="absolute inset-2 rounded-full bg-gradient-to-br from-yellow-200 to-orange-400 flex items-center justify-center">
+              <span className="text-4xl">☀️</span>
+            </div>
+          </div>
+
+          {/* Text */}
+          <h2
+            className="text-2xl font-bold text-amber-100 mb-2"
+            style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+          >
+            מעדכן גרסה חדשה
+          </h2>
+          <p className="text-amber-300">רגע אחד...</p>
+
+          {/* Dots animation */}
+          <div className="flex gap-2 mt-4">
+            <div
+              className="w-2 h-2 bg-amber-400 rounded-full animate-bounce"
+              style={{ animationDelay: "0s" }}
+            ></div>
+            <div
+              className="w-2 h-2 bg-amber-400 rounded-full animate-bounce"
+              style={{ animationDelay: "0.2s" }}
+            ></div>
+            <div
+              className="w-2 h-2 bg-amber-400 rounded-full animate-bounce"
+              style={{ animationDelay: "0.4s" }}
+            ></div>
+          </div>
+        </div>
+      )}
+
+      {/* Fullscreen Live Now */}
+      {showLiveNow && (
+        <FullscreenLiveNow
+          liveSlots={getCurrentlyPlaying()}
+          onClose={() => setShowLiveNow(false)}
+        />
+      )}
     </div>
   );
 }
