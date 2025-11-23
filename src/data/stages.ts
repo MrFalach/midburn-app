@@ -100,7 +100,7 @@ export const stages: Stage[] = [
         ],
       },
       {
-        date: "Tuesday 24.11",
+        date: "Tuesday 25.11",
         slots: [
           { startTime: "00:00", endTime: "00:30", artist: "Sandner" },
           { startTime: "00:30", endTime: "02:00", artist: "Yuvee" },
