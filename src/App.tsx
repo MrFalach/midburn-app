@@ -19,6 +19,7 @@ function App() {
   const [showLiveNow, setShowLiveNow] = useState(false);
   const [showMap, setShowMap] = useState(false);
   const [showInstallGuide, setShowInstallGuide] = useState(false);
+  const [showInstallPrompt, setShowInstallPrompt] = useState(false);
 
   useEffect(() => {
     const standalone =
@@ -27,6 +28,22 @@ function App() {
       document.referrer.includes("android-app://");
 
     setIsStandalone(standalone);
+
+    // Check if user dismissed the install prompt before
+    const hasSeenInstallPrompt = localStorage.getItem("hasSeenInstallPrompt");
+
+    // Show install prompt only if:
+    // 1. Not in standalone mode (not installed)
+    // 2. Haven't seen the prompt before
+    // 3. On mobile device
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    if (!standalone && !hasSeenInstallPrompt && isMobile) {
+      // Show after 3 seconds
+      setTimeout(() => {
+        setShowInstallPrompt(true);
+      }, 3000);
+    }
 
     const hasSeenReady = localStorage.getItem("hasSeenReady");
     setHasSeenBefore(!!hasSeenReady);
@@ -371,6 +388,109 @@ function App() {
       {/* Install guide */}
       {showInstallGuide && (
         <InstallGuide onClose={() => setShowInstallGuide(false)} />
+      )}
+      {/* Install Prompt */}
+      {showInstallPrompt && !isStandalone && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-4 animate-fade-in">
+          <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-t-3xl sm:rounded-2xl shadow-2xl max-w-md w-full p-6 animate-slide-up">
+            {/* Close button */}
+            <button
+              onClick={() => {
+                setShowInstallPrompt(false);
+                localStorage.setItem("hasSeenInstallPrompt", "true");
+              }}
+              className="absolute top-4 left-4 text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+
+            {/* Icon */}
+            <div className="flex justify-center mb-4">
+              <div className="bg-gradient-to-br from-amber-400 to-orange-500 p-4 rounded-full">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                  className="w-8 h-8 text-white"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+                  />
+                </svg>
+              </div>
+            </div>
+
+            {/* Title */}
+            <h3
+              className="text-2xl font-bold text-center text-amber-900 mb-2"
+              style={{ fontFamily: "'Righteous', sans-serif" }}
+            >
+              📱 התקן את האפליקציה!
+            </h3>
+
+            {/* Description */}
+            <p className="text-center text-gray-700 mb-6 leading-relaxed">
+              כדי להשתמש באפליקציה <strong>ללא אינטרנט</strong> באירוע, התקן
+              אותה עכשיו למסך הבית 🏜️
+            </p>
+
+            {/* Benefits */}
+            <div className="space-y-2 mb-6">
+              <div className="flex items-start gap-2 text-sm text-gray-600">
+                <span className="text-green-600 mt-0.5">✓</span>
+                <span>עובד אופליין במדבר ללא קליטה</span>
+              </div>
+              <div className="flex items-start gap-2 text-sm text-gray-600">
+                <span className="text-green-600 mt-0.5">✓</span>
+                <span>גישה מהירה מהמסך הבית</span>
+              </div>
+              <div className="flex items-start gap-2 text-sm text-gray-600">
+                <span className="text-green-600 mt-0.5">✓</span>
+                <span>לוחות זמנים תמיד זמינים</span>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="space-y-2">
+              <button
+                onClick={() => {
+                  setShowInstallPrompt(false);
+                  setShowInstallGuide(true);
+                  localStorage.setItem("hasSeenInstallPrompt", "true");
+                }}
+                className="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl font-bold hover:shadow-lg transition-all"
+              >
+                📥 הראה לי איך להתקין
+              </button>
+              <button
+                onClick={() => {
+                  setShowInstallPrompt(false);
+                  localStorage.setItem("hasSeenInstallPrompt", "true");
+                }}
+                className="w-full py-3 bg-gray-200 text-gray-700 rounded-xl font-semibold hover:bg-gray-300 transition-colors"
+              >
+                אולי מאוחר יותר
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
