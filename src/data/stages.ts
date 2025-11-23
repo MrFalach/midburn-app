@@ -42,18 +42,18 @@ export const stages: Stage[] = [
           { startTime: "18:00", endTime: "20:00", artist: "Dr. Seuss" },
           { startTime: "20:00", endTime: "22:00", artist: "yuvee" },
           { startTime: "22:00", endTime: "01:00", artist: "Squid" },
-          { startTime: "01:00", endTime: "02:30", artist: "Oxiv" },
+          { startTime: "01:00", endTime: "02:30", artist: "Maisha" },
           { startTime: "02:30", endTime: "04:30", artist: "Nevo" },
           { startTime: "04:30", endTime: "06:30", artist: "Kosta & Mi ya ra" },
-          { startTime: "06:30", endTime: "08:00", artist: "Shavit" },
+          { startTime: "06:30", endTime: "08:00", artist: "shavit" },
         ],
       },
       {
         date: "Thursday 27.11",
         slots: [
           { startTime: "11:30", endTime: "13:00", artist: "Hadar Hebler" },
-          { startTime: "13:00", endTime: "02:30", artist: "Soulmeth" },
-          { startTime: "02:30", endTime: "16:00", artist: "Toi Toi" },
+          { startTime: "13:00", endTime: "14:30", artist: "Nina" },
+          { startTime: "14:30", endTime: "16:00", artist: "Toi Toi" },
           { startTime: "16:00", endTime: "17:00", artist: "Astral Projection" },
           { startTime: "17:00", endTime: "18:30", artist: "Outsiders" },
           { startTime: "18:30", endTime: "19:30", artist: "Skazi" },
@@ -62,7 +62,7 @@ export const stages: Stage[] = [
       {
         date: "Friday 28.11",
         slots: [
-          { startTime: "19:00", endTime: "21:00", artist: "Sasi" },
+          { startTime: "19:00", endTime: "21:00", artist: "Yehuda" },
           { startTime: "21:00", endTime: "22:30", artist: "Fernanda Pistelli" },
           {
             startTime: "22:30",
