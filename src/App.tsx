@@ -252,28 +252,34 @@ function App() {
           pointerEvents: headerOpacity < 0.3 ? "none" : "auto",
         }}
       >
-        {/* Install Guide Button */}
-        <button
-          onClick={() => setShowInstallGuide(true)}
-          className="absolute top-4 left-4 bg-amber-900/50 p-2 rounded-lg text-amber-100 hover:bg-amber-800/60 hover:text-white transition-all border border-amber-700/50"
-          aria-label="Install guide"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2}
-            stroke="currentColor"
-            className="w-6 h-6"
+        {/* Install Guide Button - only show if not installed */}
+        {!isStandalone && (
+          <button
+            onClick={() => setShowInstallGuide(true)}
+            className="absolute top-4 left-4 bg-amber-900/50 p-2 rounded-lg text-amber-100 hover:bg-amber-800/60 hover:text-white transition-all border border-amber-700/50 relative"
+            aria-label="Install guide"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
-            />
-          </svg>
-        </button>
-
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+              />
+            </svg>
+            {/* Red notification dot with pulse animation */}
+            <span className="absolute -top-1 -right-1 flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span>
+            </span>
+          </button>
+        )}{" "}
         {/* Sun decoration */}
         <div className="flex justify-center mb-3">
           <div className="relative w-12 h-12 sun-pulse">
@@ -283,7 +289,6 @@ function App() {
             </div>
           </div>
         </div>
-
         <h1
           className="text-3xl font-bold text-center text-amber-100 mb-1 tracking-wider"
           style={{
@@ -299,7 +304,6 @@ function App() {
         >
           SCHEDULE
         </h2>
-
         <div className="flex flex-col items-center justify-center gap-1 mb-4">
           <span
             className="text-sm font-semibold text-gray-800"
@@ -313,14 +317,12 @@ function App() {
             className="h-8 object-contain brightness-0"
           />
         </div>
-
         {/* Tribal divider */}
         <div className="flex items-center justify-center gap-2 mb-5">
           <div className="h-px flex-1 bg-gradient-to-r from-transparent to-amber-600"></div>
           <div className="text-amber-500 text-xs">▲ ▼ ▲</div>
           <div className="h-px flex-1 bg-gradient-to-l from-transparent to-amber-600"></div>
         </div>
-
         {/* Live Now Button and Search Bar side by side */}
         <div className="flex gap-2 mb-4">
           <button
@@ -349,7 +351,6 @@ function App() {
             />
           </div>
         </div>
-
         <div className={searchQuery ? "invisible h-0 overflow-hidden" : ""}>
           <StageSelector
             stages={stages}
