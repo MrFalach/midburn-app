@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { StageSchedule } from "./components/StageSchedule";
 import { StageSelector } from "./components/StageSelector";
 import { SearchBar } from "./components/SearchBar";
-import { SearchResults } from "./components/SearchResults";
 import { LiveNowView } from "./components/LiveNowView";
 import { MapView } from "./components/MapView";
 import { InstallGuide } from "./components/InstallGuide";
