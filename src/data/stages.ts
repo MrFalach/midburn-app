@@ -45,7 +45,7 @@ export const stages: Stage[] = [
           { startTime: "01:00", endTime: "02:30", artist: "Oxiv" },
           { startTime: "02:30", endTime: "04:30", artist: "Nevo" },
           { startTime: "04:30", endTime: "06:30", artist: "Kosta & Mi ya ra" },
-          { startTime: "06:30", endTime: "08:00", artist: "Shvit" },
+          { startTime: "06:30", endTime: "08:00", artist: "Shavit" },
         ],
       },
       {
@@ -88,9 +88,9 @@ export const stages: Stage[] = [
           { startTime: "16:00", endTime: "17:30", artist: "לירן" },
           { startTime: "17:30", endTime: "19:00", artist: "יותם רוסו" },
           { startTime: "19:00", endTime: "20:30", artist: "בן לשפץ" },
-          { startTime: "20:30", endTime: "22:00", artist: "מילורו" },
+          { startTime: "20:30", endTime: "22:00", artist: "מילרו" },
           { startTime: "22:00", endTime: "23:30", artist: "רינה" },
-          { startTime: "23:30", endTime: "01:00", artist: "טט" },
+          { startTime: "23:30", endTime: "01:00", artist: "טז" },
           { startTime: "01:00", endTime: "08:00", artist: "סגור (Closed)" }, // סגירה עד 8:00 בבוקר
         ],
       },
@@ -98,13 +98,13 @@ export const stages: Stage[] = [
       {
         date: "Tuesday 25.11",
         slots: [
-          { startTime: "12:00", endTime: "14:00", artist: "דיג ו בן ברון" },
+          { startTime: "12:00", endTime: "14:00", artist: "דיפ ובן בירון" },
           { startTime: "14:00", endTime: "15:30", artist: "נינה" },
           { startTime: "15:30", endTime: "17:00", artist: "מישל" },
           { startTime: "17:00", endTime: "19:00", artist: "מוסקון ועומר ענבר" },
           { startTime: "19:00", endTime: "20:30", artist: "אסף שמואל" },
           { startTime: "20:30", endTime: "22:00", artist: "מעיין רחמים" },
-          { startTime: "22:00", endTime: "23:30", artist: "קטון שלומי" },
+          { startTime: "22:00", endTime: "23:30", artist: "קפטן שלומי" },
           { startTime: "23:30", endTime: "01:00", artist: "קלאב דה קומבט" },
           { startTime: "01:00", endTime: "12:00", artist: "סגור (Closed)" }, // סגירה עד 12:00 בצהריים
         ],
@@ -118,7 +118,7 @@ export const stages: Stage[] = [
           { startTime: "18:00", endTime: "20:00", artist: "שרון וליפה" },
           { startTime: "20:00", endTime: "22:00", artist: "דארקו" },
           { startTime: "22:00", endTime: "23:30", artist: "קפטן לייב" },
-          { startTime: "23:30", endTime: "01:00", artist: "עמי זמון וריזין" },
+          { startTime: "23:30", endTime: "01:00", artist: "עמי וגון וריזין" },
           { startTime: "01:00", endTime: "02:30", artist: "אנימטו" },
           { startTime: "02:30", endTime: "04:00", artist: "יסמין" },
           { startTime: "04:00", endTime: "05:30", artist: "פיקסל" },
@@ -143,14 +143,14 @@ export const stages: Stage[] = [
           { startTime: "01:00", endTime: "02:30", artist: "מגית קקון" },
           { startTime: "02:30", endTime: "04:00", artist: "גניש" },
           { startTime: "04:00", endTime: "06:29", artist: "עמרי נקודה" },
-          { startTime: "06:29", endTime: "06:40", artist: "טקס" },
+          { startTime: "06:30", endTime: "06:40", artist: "טקס" },
           { startTime: "06:40", endTime: "10:00", artist: "קפטן+סאסי" },
           { startTime: "10:00", endTime: "14:00", artist: "סגור (Closed)" },
           { startTime: "14:00", endTime: "15:30", artist: "נועם לשם" },
           { startTime: "15:30", endTime: "17:00", artist: "פרדוס פויטשס" },
-          { startTime: "17:00", endTime: "18:30", artist: "אנרג׳טר טרזראזיק" },
-          { startTime: "18:30", endTime: "20:30", artist: "סקייזזלוגיק" },
-          { startTime: "20:30", endTime: "22:30", artist: "אזזרזזארדרס" },
+          { startTime: "17:00", endTime: "18:30", artist: "אנצרטר טראטורי" },
+          { startTime: "18:30", endTime: "20:30", artist: "סקייזולגיק" },
+          { startTime: "20:30", endTime: "22:30", artist: "אווטסידרס" },
           { startTime: "22:30", endTime: "23:59", artist: "סגור (Closed)" },
         ],
       },
@@ -268,13 +268,7 @@ export const stages: Stage[] = [
           { startTime: "06:30", endTime: "08:00", artist: "Liran" },
         ],
       },
-      {
-        date: "Sat 22.11",
-        slots: [
-          { startTime: "00:00", endTime: "01:00", artist: "Sagigi" },
-          { startTime: "00:00", endTime: "02:00", artist: "Delete Me" },
-        ],
-      },
+
       {
         date: "Thursday 27.11",
         slots: [
