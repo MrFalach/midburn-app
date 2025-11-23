@@ -6,6 +6,7 @@ import { SearchResults } from "./components/SearchResults";
 import { LiveNowView } from "./components/LiveNowView";
 import { MapView } from "./components/MapView";
 import { stages } from "./data/stages";
+import { InstallGuide } from "./components/InstallGuide";
 
 function App() {
   const [isReady, setIsReady] = useState(false);
@@ -17,6 +18,7 @@ function App() {
   const [scrollY, setScrollY] = useState(0);
   const [showLiveNow, setShowLiveNow] = useState(false);
   const [showMap, setShowMap] = useState(false);
+  const [showInstallGuide, setShowInstallGuide] = useState(false);
 
   useEffect(() => {
     const standalone =
@@ -229,6 +231,28 @@ function App() {
           </div>
         </div>
 
+        {/* Install Guide Button */}
+        <button
+          onClick={() => setShowInstallGuide(true)}
+          className="absolute top-4 left-4 text-amber-200 hover:text-white transition-colors"
+          aria-label="Install guide"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+            />
+          </svg>
+        </button>
+
         <h1
           className="text-3xl font-bold text-center text-amber-100 mb-1 tracking-wider"
           style={{
@@ -328,7 +352,7 @@ function App() {
       </div>
 
       {/* Footer with credit */}
-      <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-amber-950/90 to-transparent py-2 text-center text-[10px] text-amber-300 z-10">
+      <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-amber-950/90 to-transparent py-2 text-center text-[8px] text-amber-300 z-10">
         Made with ❤️ by <span className="font-semibold">Sagi Falach</span>
       </div>
 
@@ -344,6 +368,10 @@ function App() {
       )}
       {/* Map view */}
       {showMap && <MapView onClose={() => setShowMap(false)} />}
+      {/* Install guide */}
+      {showInstallGuide && (
+        <InstallGuide onClose={() => setShowInstallGuide(false)} />
+      )}
     </div>
   );
 }
